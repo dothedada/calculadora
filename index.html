@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Calculadora 🧮</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="contenedor">
+
+        <div id="panelRespuestas">
+            <div class="respuesta">
+                <span class="respuesta__teclado">(↑5)</span>
+                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">(↑4)</span>
+                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">(↑3)</span>
+                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">(↑2)</span>
+                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">(↑1)</span>
+                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+        </div>
+
+        <div> 
+            <div id="operacion" class="pantalla">123 + 456</div>
+            <div id="resultado" class="pantalla">-1234567890.12</div>
+        </div>
+
+        <div class="teclado">
+            <button class="teclado__borrar">C/AC</button>
+            <div class="teclado__memoria">
+                <button class="memoriaBoton">M1</button>
+                <span class="memoriaValor">123456</span>
+            </div>
+            <div class="teclado__memoria">
+                <button class="memoriaBoton">M2</button>
+                <span class="memoriaValor">1</span>
+            </div>
+            <div class="teclado__memoria">
+                <button class="memoriaBoton">M3</button>
+                <span class="memoriaValor">-1234567890</span>
+            </div>
+            <!-- siguiente columna -->
+            <button>7</button>
+            <button>4</button>
+            <button>1</button>
+            <button>0</button>
+            <!-- siguiente columna -->
+            <button>8</button>
+            <button>5</button>
+            <button>2</button>
+            <button>,</button>
+            <!-- siguiente columna -->
+            <button>9</button>
+            <button>6</button>
+            <button>3</button>
+            <button>+/-</button>
+            <!-- siguiente columna -->
+            <button class="operacion">X <span class="superIndice">y</span></button>
+            <button class="operacion">*</button>
+            <button class="doble operacion">+</button>
+            <!-- siguiente columna -->
+            <button class="operacion">%</button>
+            <button class="operacion">÷</button>
+            <button class="operacion">–</button>
+            <button class="operacion">=</button>
+        </div>
+
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

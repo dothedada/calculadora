@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+:root {
+    --color-blanco: #e8e4dc;
+    --color-fondo: #d1cdc7;
+    --color-frente: #262421;
+    --color-intermedio: #69655e;
+    --color-intermedio-oprimido: #4f4c47;
+    --color-operacion: #b8852e;
+    --color-operacion-oprimido: #9e7328;
+    --color-advertencia: #ca4830;
+    --color-advertencia-oprimido: #963524;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+html { 
+    font-size: 100%;
+}
+body {
+    font-family: 'Fira Code', monospace;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-fondo);
+    color: var(--color-frente);
+}
+
+.contenedor {
+    outline-offset: 2px;
+    border-radius: 8px;
+    width: 450px;
+}
+.respuesta {
+    /* margin: 0 0 0.5rem; */
+    padding: 0.4rem 1rem;
+    border-bottom: dotted 1px var(--color-intermedio);
+    font-size: 1rem;
+    color: var(--color-intermedio);
+    display: flex;
+    gap: 1ch;
+}
+.respuesta:last-child {
+    border-bottom: none;
+    margin: 0 0 0.5rem;
+}
+.respuesta > :first-child {
+    color: var(--color-blanco);
+}
+.respuesta > :last-child {
+    color: var(--color-intermedio-oprimido);
+    margin: 0 0 0 auto;
+}
+.pantalla {
+    background-color: var(--color-blanco);
+    padding: 0.5rem 1rem 0.2rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+.pantalla:last-child {
+    font-size: 3rem;
+    text-align: right;
+    margin: 0 0 2rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    font-weight: 600;
+}
+
+.teclado {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    height: 300px;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+button {
+    box-sizing: border-box;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    outline: solid 2px var(--color-intermedio);
+    outline-offset: -1px;
+    border: none;
+    background-color: var(--color-intermedio);
+    color: var(--color-blanco);
+    font-size: 1.4rem;
+    font-weight: 600;
+    transition: outline-offset 0.1s ease-in-out,
+            transform 0.1s ease-in-out;
+}
+button:hover {
+    outline-offset: 4px;
+}
+button:active {
+    transform: scale(0.9);
+    background-color: var(--color-intermedio-oprimido);
+
+}
+.doble {
+    height: calc(130px + 0.5rem);
+    border-top-left-radius: 50% 25%;
+    border-top-right-radius: 50% 25%;
+    border-bottom-left-radius: 50% 25%;
+    border-bottom-right-radius: 50% 25%;
+}
+.teclado__borrar {
+    background-color: var(--color-advertencia);
+    outline: solid 2px var(--color-advertencia);
+}
+.teclado__borrar:active {
+    background-color: var(--color-advertencia-oprimido);
+}
+.teclado__memoria {
+    position: relative;
+}
+.memoriaBoton {
+    background-color: var(--color-frente);
+    outline: solid 2px var(--color-frente);
+}
+.memoriaValor {
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+    width: 200%;
+    text-align: right;
+    transform: translate(-60%, 100%);
+    color: var(--color-intermedio);
+    text-decoration: underline;
+
+}
+.operacion {
+    background-color: var(--color-operacion);
+    outline: solid 2px var(--color-operacion);
+}
+.operacion:active {
+    background-color: var(--color-operacion-oprimido);
+}
