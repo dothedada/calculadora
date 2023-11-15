@@ -2,17 +2,13 @@
 :root {
     --color-blanco: #e8e4dc;
     --color-fondo: #d1cdc7;
-    --color-frente: #262421;
     --color-intermedio: #69655e;
     --color-intermedio-oprimido: #4f4c47;
+    --color-frente: #262421;
     --color-operacion: #b8852e;
     --color-operacion-oprimido: #9e7328;
     --color-advertencia: #ca4830;
     --color-advertencia-oprimido: #963524;
-}
-* {
-    margin: 0;
-    padding: 0;
 }
 html { 
     font-size: 100%;
@@ -22,18 +18,18 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     background-color: var(--color-fondo);
     color: var(--color-frente);
 }
 
 .contenedor {
-    outline-offset: 2px;
-    border-radius: 8px;
     width: 450px;
+    padding: 2rem 0 1rem;
+    border-bottom: solid 1px var(--color-blanco);
 }
+
 .respuesta {
-    /* margin: 0 0 0.5rem; */
     padding: 0.4rem 1rem;
     border-bottom: dotted 1px var(--color-intermedio);
     font-size: 1rem;
@@ -43,15 +39,16 @@ body {
 }
 .respuesta:last-child {
     border-bottom: none;
-    margin: 0 0 0.5rem;
+    margin: 0 0 1rem;
 }
-.respuesta > :first-child {
+.respuesta__teclado {
     color: var(--color-blanco);
 }
-.respuesta > :last-child {
+.respuesta__resultado {
     color: var(--color-intermedio-oprimido);
     margin: 0 0 0 auto;
 }
+
 .pantalla {
     background-color: var(--color-blanco);
     padding: 0.5rem 1rem 0.2rem;
@@ -73,51 +70,10 @@ body {
     flex-direction: column;
     gap: 0.8rem;
 }
-button {
-    box-sizing: border-box;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    outline: solid 2px var(--color-intermedio);
-    outline-offset: -1px;
-    border: none;
-    background-color: var(--color-intermedio);
-    color: var(--color-blanco);
-    font-size: 1.4rem;
-    font-weight: 600;
-    transition: outline-offset 0.1s ease-in-out,
-            transform 0.1s ease-in-out;
-}
-button:hover {
-    outline-offset: 4px;
-}
-button:active {
-    transform: scale(0.9);
-    background-color: var(--color-intermedio-oprimido);
-
-}
-.doble {
-    height: calc(130px + 0.5rem);
-    border-top-left-radius: 50% 25%;
-    border-top-right-radius: 50% 25%;
-    border-bottom-left-radius: 50% 25%;
-    border-bottom-right-radius: 50% 25%;
-}
-.teclado__borrar {
-    background-color: var(--color-advertencia);
-    outline: solid 2px var(--color-advertencia);
-}
-.teclado__borrar:active {
-    background-color: var(--color-advertencia-oprimido);
-}
 .teclado__memoria {
     position: relative;
 }
-.memoriaBoton {
-    background-color: var(--color-frente);
-    outline: solid 2px var(--color-frente);
-}
-.memoriaValor {
+.teclado__valor {
     position: absolute;
     display: block;
     top: 0;
@@ -129,10 +85,64 @@ button:active {
     text-decoration: underline;
 
 }
-.operacion {
+
+.boton {
+    box-sizing: border-box;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    outline: solid 2px var(--color-intermedio);
+    outline-offset: -1px;
+    border: none;
+    background-color: var(--color-intermedio);
+    color: var(--color-blanco);
+    font-size: 1.4rem;
+    font-weight: 600;
+    transition: 
+        outline-offset 0.1s ease-in-out,
+        transform 0.1s ease-in-out;
+}
+.boton:hover {
+    outline-offset: 4px;
+}
+.boton:active {
+    transform: scale(0.9);
+    outline-offset: 8px;
+    background-color: var(--color-intermedio-oprimido);
+
+}
+.boton__superIndice {
+    font-size: 0.8rem;
+    vertical-align: super;
+    position: relative;
+    top: -0.5rem;
+    left: 0.1rem;
+}
+
+.boton--borrar {
+    background-color: var(--color-advertencia);
+    outline: solid 2px var(--color-advertencia);
+}
+.boton--borrar:active {
+    background-color: var(--color-advertencia-oprimido);
+}
+
+.boton--memoria {
+    background-color: var(--color-frente);
+    outline: solid 2px var(--color-frente);
+}
+
+.boton--operacion {
     background-color: var(--color-operacion);
     outline: solid 2px var(--color-operacion);
 }
-.operacion:active {
+.boton--operacion:active {
     background-color: var(--color-operacion-oprimido);
+}
+.boton--doble {
+    height: calc(130px + 0.8rem);
+    border-top-left-radius: 50% 25%;
+    border-top-right-radius: 50% 25%;
+    border-bottom-left-radius: 50% 25%;
+    border-bottom-right-radius: 50% 25%;
 }
