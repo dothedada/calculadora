@@ -23,7 +23,7 @@ body {
     font-family: 'Fira Code', monospace;
 }
 
-.contenedor {
+.calculadora {
     margin: 1rem auto 0;
     width: 17rem;
     padding: 0 0 1rem;
@@ -32,16 +32,24 @@ body {
     align-items: center;
 }
 
+.respuestas {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 14rem;
+}
 .respuesta {
     width: 28ch;
-    padding: 0.1rem 0;
+    padding: 0.1rem 1ch;
     display: flex;
     color: var(--color-texto);
-
 }
-.respuesta:last-child {
+.respuesta:first-child {
     margin: 0 0 1rem;
     border-bottom: none;
+}
+.respuesta__teclado,
+.respuesta__operacion {
+    margin: 0 1ch 0 0;
 }
 .respuesta__resultado {
     margin: 0 0 0 auto;
@@ -56,11 +64,13 @@ body {
     background-color: var(--color-blanco);
     color: var(--color-intermedio);
 }
+.operacion__operador {
+    color: var(--color-frente);
+}
 .pantalla__resultado {
     color: var(--color-frente);
     font-size: 2rem;
     text-align: right;
-
 }
 
 .teclado,
