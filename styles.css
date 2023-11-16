@@ -10,6 +10,10 @@
     --color-advertencia: #ca4830;
     --color-advertencia-oprimido: #963524;
 }
+* { 
+    margin: 0;
+    padding: 0;
+}
 html { 
     font-size: 100%;
 }
@@ -24,9 +28,8 @@ body {
 }
 
 .contenedor {
-    width: 450px;
-    padding: 2rem 0 1rem;
-    border-bottom: solid 1px var(--color-blanco);
+    padding: 1rem 0 2rem;
+    width: 20.5rem;
 }
 
 .respuesta {
@@ -55,68 +58,73 @@ body {
     border-radius: 0.5rem 0.5rem 0 0;
 }
 .pantalla:last-child {
-    font-size: 3rem;
+    font-size: 2rem;
     text-align: right;
-    margin: 0 0 2rem;
+    margin: 0 0 1rem;
     border-radius: 0 0 0.5rem 0.5rem;
     font-weight: 600;
 }
-
-.teclado {
-    box-sizing: border-box;
+.teclado,
+.teclado > * {
     display: flex;
-    flex-wrap: wrap;
-    height: 300px;
-    flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.5rem;
 }
 .teclado__memoria {
-    position: relative;
+    flex-direction: column;
 }
-.teclado__valor {
-    position: absolute;
-    display: block;
-    top: 0;
-    right: 0;
-    width: 200%;
-    text-align: right;
-    transform: translate(-60%, 100%);
-    color: var(--color-intermedio);
-    text-decoration: underline;
-
+.teclado__numerico {
+    max-width: 10rem;
+    flex-wrap: wrap-reverse;
+}
+.teclado__operaciones {
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 14rem;
 }
 
 .boton {
     box-sizing: border-box;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 40%;
     outline: solid 2px var(--color-intermedio);
     outline-offset: -1px;
     border: none;
     background-color: var(--color-intermedio);
     color: var(--color-blanco);
-    font-size: 1.4rem;
+    font-size: 1rem;
     font-weight: 600;
     transition: 
         outline-offset 0.1s ease-in-out,
-        transform 0.1s ease-in-out;
+        transform 0.1s ease-in-out,
+        border-radius 0.2s ease-in-out;
 }
 .boton:hover {
-    outline-offset: 4px;
+    outline-offset: 3px;
 }
 .boton:active {
-    transform: scale(0.9);
-    outline-offset: 8px;
+    transform: scale(0.8);
+    outline-offset: 7px;
+    border-radius: 0;
     background-color: var(--color-intermedio-oprimido);
 
 }
+.boton__memoria {
+    position: relative;
+}
+.boton__valor {
+    position: absolute;
+    text-align: right;
+    bottom: 0;
+    right: calc(100% + 1ch);
+    transform: translate(0,-50%);
+    color: var(--color-intermedio);
+}
 .boton__superIndice {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     vertical-align: super;
     position: relative;
-    top: -0.5rem;
-    left: 0.1rem;
+    top: -0.2rem;
 }
 
 .boton--borrar {
@@ -140,9 +148,9 @@ body {
     background-color: var(--color-operacion-oprimido);
 }
 .boton--doble {
-    height: calc(130px + 0.8rem);
-    border-top-left-radius: 50% 25%;
-    border-top-right-radius: 50% 25%;
-    border-bottom-left-radius: 50% 25%;
-    border-bottom-right-radius: 50% 25%;
+    height: 6.5rem;
+    border-top-left-radius: 40% 20%;
+    border-top-right-radius: 40% 20%;
+    border-bottom-left-radius: 40% 20%;
+    border-bottom-right-radius: 40% 20%;
 }
