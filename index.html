@@ -11,55 +11,61 @@
 
         <div id="panelRespuestas">
             <div class="respuesta">
-                <span class="respuesta__teclado">(↑5)</span>
-                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__teclado">↑6>…</span>
                 <span class="respuesta__resultado">50</span>
             </div>
             <div class="respuesta">
-                <span class="respuesta__teclado">(↑4)</span>
-                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__teclado">↑5>…</span>
                 <span class="respuesta__resultado">50</span>
             </div>
             <div class="respuesta">
-                <span class="respuesta__teclado">(↑3)</span>
-                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__teclado">↑4>…</span>
                 <span class="respuesta__resultado">50</span>
             </div>
             <div class="respuesta">
-                <span class="respuesta__teclado">(↑2)</span>
-                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__teclado">↑3>…</span>
                 <span class="respuesta__resultado">50</span>
             </div>
             <div class="respuesta">
-                <span class="respuesta__teclado">(↑1)</span>
-                <span class="respuesta__operacion">10 * 5</span>
+                <span class="respuesta__teclado">↑2>…</span>
                 <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">↑1>…</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">M3></span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">M2> 123456789012345678901234</span>
+                <span class="respuesta__resultado"></span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">M1> 12345678901</span>
+                <span class="respuesta__resultado">-123456789.1</span>
             </div>
         </div>
 
-        <div> 
-            <div id="operacion" class="pantalla">123 + 456</div>
-            <div id="resultado" class="pantalla">-1234567890.12</div>
+        <div class="pantalla"> 
+            <div id="operacion">-123456789.1 * -123456789.1</div>
+            <div id="resultado" class="pantalla__resultado">0</div>
         </div>
 
         <div class="teclado">
             <!-- Sección de funciones de memoria -->
             <div class="teclado__memoria">
                 <button class="boton boton--borrar">C/AC</button>
+                <button class="boton boton--memoria">M1</button>
+                <button class="boton boton--memoria">M2</button>
+                <button class="boton boton--memoria">M3</button>
                 <button class="boton boton--borrar">CM</button>
-                <div class="boton__memoria">
-                    <button class="boton boton--memoria">M1</button>
-                    <span class="boton__valor">12345612</span>
-                </div>
-                <div class="boton__memoria">
-                    <button class="boton boton--memoria">M2</button>
-                    <span class="boton__valor">1</span>
-                </div>
             </div>
             <!-- Sección del teclado numérico -->
             <div class="teclado__numerico">
                 <button class="boton">+/-</button>
-                <button class="boton">,</button>
+                <button class="boton">.</button>
                 <button class="boton">0</button>
                 <button class="boton">1</button>
                 <button class="boton">2</button>
@@ -73,13 +79,13 @@
             </div>
             <!-- Sección del teclado de operaciones -->
             <div class="teclado__operaciones">
-                <button class="boton boton--operacion">X<span class="boton__superIndice">y</span></button>
-                <button class="boton boton--operacion">*</button>
                 <button class="boton boton--operacion boton--doble">+</button>
-                <button class="boton boton--operacion">%</button>
-                <button class="boton boton--operacion">÷</button>
-                <button class="boton boton--operacion">–</button>
+                <button class="boton boton--operacion">*</button>
+                <button class="boton boton--operacion">X<span class="boton__superIndice">y</span></button>
                 <button class="boton boton--operacion">=</button>
+                <button class="boton boton--operacion">–</button>
+                <button class="boton boton--operacion">/</button>
+                <button class="boton boton--operacion">%</button>
             </div>
         </div>
 
