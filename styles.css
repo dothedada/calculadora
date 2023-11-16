@@ -18,23 +18,19 @@ html {
     font-size: 100%;
 }
 body {
-    font-family: 'Fira Code', monospace;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
     background-color: var(--color-fondo);
-    color: var(--color-frente);
+    font-family: 'Fira Code', monospace;
 }
 
 .contenedor {
-    padding: 1rem 0 2rem;
+    margin: 0 auto;
     width: 20.5rem;
+    padding: 1rem 0 2rem;
 }
 
 .respuesta {
-    padding: 0.4rem 1rem;
     border-bottom: dotted 1px var(--color-intermedio);
+    padding: 0.4rem 1rem;
     font-size: 1rem;
     color: var(--color-intermedio);
     display: flex;
@@ -42,7 +38,7 @@ body {
 }
 .respuesta:last-child {
     border-bottom: none;
-    margin: 0 0 1rem;
+    margin: 0 0 0.5rem;
 }
 .respuesta__teclado {
     color: var(--color-blanco);
@@ -54,13 +50,16 @@ body {
 
 .pantalla {
     background-color: var(--color-blanco);
-    padding: 0.5rem 1rem 0.2rem;
+    padding: 0.5rem 1rem 0;
     border-radius: 0.5rem 0.5rem 0 0;
+    color: var(--color-intermedio);
 }
 .pantalla:last-child {
     font-size: 2rem;
+    padding: 0 1rem 0.2rem;
     text-align: right;
-    margin: 0 0 1rem;
+    color: var(--color-frente);
+    margin: 0 0 1.5rem;
     border-radius: 0 0 0.5rem 0.5rem;
     font-weight: 600;
 }
@@ -94,6 +93,7 @@ body {
     color: var(--color-blanco);
     font-size: 1rem;
     font-weight: 600;
+    text-align: center;
     transition: 
         outline-offset 0.1s ease-in-out,
         transform 0.1s ease-in-out,
@@ -105,7 +105,7 @@ body {
 .boton:active {
     transform: scale(0.8);
     outline-offset: 7px;
-    border-radius: 0;
+    border-radius: 0.5rem;
     background-color: var(--color-intermedio-oprimido);
 
 }
