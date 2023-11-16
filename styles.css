@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 :root {
     --color-blanco: #e8e4dc;
     --color-fondo: #d1cdc7;
+    --color-texto: #99938a;
     --color-intermedio: #69655e;
     --color-intermedio-oprimido: #4f4c47;
     --color-frente: #262421;
@@ -23,102 +24,92 @@ body {
 }
 
 .contenedor {
-    margin: 0 auto;
-    width: 20.5rem;
-    padding: 1rem 0 2rem;
+    margin: 1rem auto 0;
+    width: 17rem;
+    padding: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .respuesta {
-    border-bottom: dotted 1px var(--color-intermedio);
-    padding: 0.4rem 1rem;
-    font-size: 1rem;
-    color: var(--color-intermedio);
+    width: 28ch;
+    padding: 0.1rem 0;
     display: flex;
-    gap: 1ch;
+    color: var(--color-texto);
+
 }
 .respuesta:last-child {
+    margin: 0 0 1rem;
     border-bottom: none;
-    margin: 0 0 0.5rem;
-}
-.respuesta__teclado {
-    color: var(--color-blanco);
 }
 .respuesta__resultado {
-    color: var(--color-intermedio-oprimido);
     margin: 0 0 0 auto;
+    color: var(--color-intermedio);
 }
 
 .pantalla {
+    margin: 0 0 1.5rem;
+    padding: 0.5rem 2ch 0.2rem;
+    width: 28ch;
+    border-radius: 0.5rem;
     background-color: var(--color-blanco);
-    padding: 0.5rem 1rem 0;
-    border-radius: 0.5rem 0.5rem 0 0;
     color: var(--color-intermedio);
 }
-.pantalla:last-child {
-    font-size: 2rem;
-    padding: 0 1rem 0.2rem;
-    text-align: right;
+.pantalla__resultado {
     color: var(--color-frente);
-    margin: 0 0 1.5rem;
-    border-radius: 0 0 0.5rem 0.5rem;
-    font-weight: 600;
+    font-size: 2rem;
+    text-align: right;
+
 }
+
 .teclado,
 .teclado > * {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
 }
 .teclado__memoria {
-    flex-direction: column;
+    flex-direction: row;
 }
 .teclado__numerico {
     max-width: 10rem;
     flex-wrap: wrap-reverse;
 }
 .teclado__operaciones {
-    flex-direction: column;
+    flex-direction: column-reverse;
     flex-wrap: wrap;
     max-height: 14rem;
 }
 
 .boton {
+    --_color-boton: var(--color-boton, var(--color-intermedio));
     box-sizing: border-box;
     width: 3rem;
     height: 3rem;
-    border-radius: 40%;
-    outline: solid 2px var(--color-intermedio);
-    outline-offset: -1px;
     border: none;
-    background-color: var(--color-intermedio);
+    border-radius: 1.2rem;
+    outline-offset: -1px;
+    outline: solid 2px var(--_color-boton);
+    background-color: var(--_color-boton);
     color: var(--color-blanco);
-    font-size: 1rem;
-    font-weight: 600;
+    font-family: 'Fira Code', monospace;
     text-align: center;
+    font-size: 1.2rem;
     transition: 
         outline-offset 0.1s ease-in-out,
         transform 0.1s ease-in-out,
-        border-radius 0.2s ease-in-out;
+        border-radius 0.15s ease-in-out;
 }
-.boton:hover {
+.boton:hover,
+.boton:focus {
     outline-offset: 3px;
 }
 .boton:active {
     transform: scale(0.8);
     outline-offset: 7px;
     border-radius: 0.5rem;
-    background-color: var(--color-intermedio-oprimido);
-
-}
-.boton__memoria {
-    position: relative;
-}
-.boton__valor {
-    position: absolute;
-    text-align: right;
-    bottom: 0;
-    right: calc(100% + 1ch);
-    transform: translate(0,-50%);
-    color: var(--color-intermedio);
+    background-color: var(--color-boton, var(--color-intermedio-oprimido));
 }
 .boton__superIndice {
     font-size: 0.7rem;
@@ -126,31 +117,21 @@ body {
     position: relative;
     top: -0.2rem;
 }
-
 .boton--borrar {
-    background-color: var(--color-advertencia);
-    outline: solid 2px var(--color-advertencia);
+    --color-boton: var(--color-advertencia);
 }
 .boton--borrar:active {
-    background-color: var(--color-advertencia-oprimido);
+    --color-boton: var(--color-advertencia-oprimido);
 }
-
 .boton--memoria {
-    background-color: var(--color-frente);
-    outline: solid 2px var(--color-frente);
+    --color-boton: var(--color-frente);
 }
-
 .boton--operacion {
-    background-color: var(--color-operacion);
-    outline: solid 2px var(--color-operacion);
+    --color-boton: var(--color-operacion);
 }
 .boton--operacion:active {
-    background-color: var(--color-operacion-oprimido);
+    --color-boton: var(--color-operacion-oprimido);
 }
 .boton--doble {
     height: 6.5rem;
-    border-top-left-radius: 40% 20%;
-    border-top-right-radius: 40% 20%;
-    border-bottom-left-radius: 40% 20%;
-    border-bottom-right-radius: 40% 20%;
 }
