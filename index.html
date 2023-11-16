@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,49 +7,54 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="contenedor">
+    <div class="calculadora">
 
-        <div id="panelRespuestas">
+        <div id="panelRespuestas" class="respuestas">
             <div class="respuesta">
-                <span class="respuesta__teclado">↑6>…</span>
+                <span class="respuesta__teclado">M1»</span>
                 <span class="respuesta__resultado">50</span>
             </div>
             <div class="respuesta">
-                <span class="respuesta__teclado">↑5>…</span>
-                <span class="respuesta__resultado">50</span>
+                <span class="respuesta__teclado">M2»</span>
+                <span class="respuesta__resultado">123</span>
             </div>
             <div class="respuesta">
-                <span class="respuesta__teclado">↑4>…</span>
-                <span class="respuesta__resultado">50</span>
-            </div>
-            <div class="respuesta">
-                <span class="respuesta__teclado">↑3>…</span>
-                <span class="respuesta__resultado">50</span>
-            </div>
-            <div class="respuesta">
-                <span class="respuesta__teclado">↑2>…</span>
-                <span class="respuesta__resultado">50</span>
-            </div>
-            <div class="respuesta">
-                <span class="respuesta__teclado">↑1>…</span>
-                <span class="respuesta__resultado">50</span>
-            </div>
-            <div class="respuesta">
-                <span class="respuesta__teclado">M3></span>
-                <span class="respuesta__resultado">50</span>
-            </div>
-            <div class="respuesta">
-                <span class="respuesta__teclado">M2> 123456789012345678901234</span>
-                <span class="respuesta__resultado"></span>
-            </div>
-            <div class="respuesta">
-                <span class="respuesta__teclado">M1> 12345678901</span>
+                <span class="respuesta__teclado">M3»</span>
                 <span class="respuesta__resultado">-123456789.1</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">↑1></span>
+                <span class="respuesta__operacion">…</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">↑2></span>
+                <span class="respuesta__operacion">…</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">↑3></span>
+                <span class="respuesta__operacion">…</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">↑4></span>
+                <span class="respuesta__operacion">…</span>
+                <span class="respuesta__resultado">50</span>
+            </div>
+            <div class="respuesta">
+                <span class="respuesta__teclado">↑5></span>
+                <span class="respuesta__operacion">123456789012345678901</span>
+                <span class="respuesta__resultado">23</span>
             </div>
         </div>
 
         <div class="pantalla"> 
-            <div id="operacion">-123456789.1 * -123456789.1</div>
+            <div id="operacion">
+                <span>-123456789.1</span>
+                <span class="operacion__operador">*</span>
+                <span>-123456789.1</span>
+            </div>
             <div id="resultado" class="pantalla__resultado">0</div>
         </div>
 
