@@ -38,10 +38,20 @@ body {
     height: 14rem;
 }
 .respuesta {
+    position: relative;
     width: 28ch;
     padding: 0.1rem 1ch;
     display: flex;
     color: var(--color-texto);
+    cursor: pointer;
+}
+.respuesta:hover {
+    /* color: var(--color-fondo); */
+    background-color: var(--color-blanco);
+    border-radius: 4px;
+}
+.respuesta:hover > .respuesta__resultado {
+    /* color: var(--color-blanco); */
 }
 .respuesta:first-child {
     margin: 0 0 1rem;
@@ -55,7 +65,16 @@ body {
     margin: 0 0 0 auto;
     color: var(--color-intermedio);
 }
-
+.respuesta:hover::after {
+    position: absolute;
+    content: '↓';
+    padding: 0 1ch;
+    right: 0;
+    text-decoration: underline;
+    color: var(--color-frente);
+    transform: translateX(100%);
+    cursor: pointer;
+}
 .pantalla {
     margin: 0 0 1.5rem;
     padding: 0.5rem 2ch 0.2rem;
@@ -106,6 +125,7 @@ body {
     font-family: 'Fira Code', monospace;
     text-align: center;
     font-size: 1.2rem;
+    cursor: pointer;
     transition: 
         outline-offset 0.1s ease-in-out,
         transform 0.1s ease-in-out,
