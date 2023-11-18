@@ -18,7 +18,7 @@ const ingresarDigito = digito => {
         display.textContent = -display.textContent
     }
     if(digito === '.') {
-        display.textContent = +display.textContent.split('.').join('')+'.'
+        display.textContent = `${+display.textContent.split('.').join('')}.`
     }
     if(display.textContent.split(/\d/).length > 10) return
     if(/\d/.test(digito)) {
@@ -33,14 +33,13 @@ botonesTeclado.addEventListener('click', evento => {
     if(evento.target.tagName !== 'BUTTON') return
     const boton = evento.target.textContent
     // introducir un número
-    if(/\b\d|(\+\/-)|\./.test(boton)) ingresarDigito(boton)
+    if(/^[0-9.]|^\+.\-$/.test(boton)) ingresarDigito(boton)
     
-    if(/[*Xy%=+\º/-]/.test(boton) && boton.length < 3) console.log(boton) // mejorar ese regex
+    if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) console.log(boton) // mejorar ese regex
     
-    if(/[A-M]+\d|[A-M]/.test(boton)) console.log('memoria ' + boton)
+    if(/[A-M]/.test(boton)) console.log('memoria ' + boton)
 
     // boton de borrar pantalla temporal
-
     if(boton === 'C') display.textContent = 0
 })
 
