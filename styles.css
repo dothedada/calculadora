@@ -46,12 +46,8 @@ body {
     cursor: pointer;
 }
 .respuesta:hover {
-    /* color: var(--color-fondo); */
     background-color: var(--color-blanco);
     border-radius: 4px;
-}
-.respuesta:hover > .respuesta__resultado {
-    /* color: var(--color-blanco); */
 }
 .respuesta:first-child {
     margin: 0 0 1rem;
@@ -77,17 +73,32 @@ body {
 }
 .pantalla {
     margin: 0 0 1.5rem;
+    position: relative;
     padding: 0.5rem 2ch 0.2rem;
     width: 28ch;
     border-radius: 0.5rem;
     background-color: var(--color-blanco);
     color: var(--color-intermedio);
 }
+.operacion {
+    display: block;
+    height: 22px;
+}
 .operacion__operador {
     color: var(--color-frente);
 }
+.operacion--activo::after {
+    position: absolute;
+    top: 1.6rem;
+    width: 1ch;
+    height: 0.2rem;
+    content: '';
+    background-color: var(--color-texto);
+    animation: parpadeo 0.8s steps(1) infinite;
+}
 .pantalla__resultado {
     color: var(--color-frente);
+    height: 43px;
     font-size: 2rem;
     text-align: right;
 }
@@ -164,4 +175,9 @@ body {
 }
 .boton--doble {
     height: 6.5rem;
+}
+@keyframes parpadeo {
+    50% {
+        opacity: 0;
+    }
 }

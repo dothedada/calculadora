@@ -9,7 +9,7 @@
 <body>
     <div class="calculadora">
 
-        <div id="panelRespuestas" class="respuestas">
+        <div id="memoria" class="respuestas">
             <!-- hasta 3 páneles de memoria y 5 de respuestas-->
             <div class="respuesta">
                 <span class="respuesta__teclado">M1»</span>
@@ -23,12 +23,12 @@
         </div>
 
         <div class="pantalla"> 
-            <div id="operacion">
-                <span>0</span>
+            <div id="operacion" class="operacion">
+                <span class="operacion--activo"></span>
                 <span class="operacion__operador"></span>
                 <span></span>
             </div>
-            <div id="resultado" class="pantalla__resultado">0</div>
+            <div id="resultado" class="pantalla__resultado"></div>
         </div>
 
         <div id="teclado" class="teclado">
@@ -59,7 +59,8 @@
             <div class="teclado__operaciones">
                 <button class="boton boton--operacion boton--doble">+</button>
                 <button class="boton boton--operacion">*</button>
-                <button class="boton boton--operacion">X<span class="boton__superIndice">y</span></button>
+                <button class="boton boton--operacion">**</button>
+                <!-- <button class="boton boton--operacion">X<span class="boton__superIndice">y</span></button> -->
                 <button class="boton boton--operacion">=</button>
                 <button class="boton boton--operacion">-</button>
                 <button class="boton boton--operacion">/</button>

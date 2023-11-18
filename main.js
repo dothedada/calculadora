@@ -1,54 +1,90 @@
-// llamar todos los elementos interactivos de la calculadora
-// Llamado de los elementos de la pantalla de memoria
-const panelRespuestas = document.getElementById('panelRespuestas')
+const memoria = document.getElementById('memoria')
 
-// Llamado de los elementos en la pantalla de operaciones
 const operador1 = document.getElementById('operacion').firstElementChild
 const operador2 = document.getElementById('operacion').lastElementChild
 const operando = document.getElementById('operacion').children[1]
-const display = document.getElementById('resultado')
+const resultado = document.getElementById('resultado')
 
-// llamado de los elementos del teclado
-const botonesTeclado = document.getElementById('teclado')
-
-// funciones
-// Ingresar un dígito
+let limpiezaResultado = false
+const teclado = document.getElementById('teclado')
 const ingresarDigito = digito => {
-    if(digito === '+/-' && +display.textContent){ 
-        display.textContent = -display.textContent
+    if(limpiezaResultado) {
+        operador1.textContent = ''
+        operador2.textContent = ''
+        operando.textContent = ''
+        resultado.textContent = ''
+        limpiezaResultado = false
+    }
+    const casilla = operando.textContent === '' ? operador1 : operador2
+
+    if(digito === '+/-' && +casilla.textContent){ 
+        casilla.textContent = -casilla.textContent
     }
     if(digito === '.') {
-        display.textContent = `${+display.textContent.split('.').join('')}.`
+        casilla.textContent = `${+casilla.textContent.split('.').join('')}.`
     }
-    if(display.textContent.split(/\d/).length > 10) return
+    if(casilla.textContent.split(/\d/).length > 10) return
     if(/\d/.test(digito)) {
-        display.textContent = display.textContent === "0" ? digito : display.textContent + digito
+        if(casilla.textContent === '0' || casilla.textContent === '3rr0r') {
+            casilla.textContent = digito
+            return
+        }
+        casilla.textContent +=  digito
     }
 }
-// pasa el valor a la primera casilla
 
+const calculadora = {
+    '+': (x, y) => +x + +y,
+    '-': (x, y) => +x - +y,
+    '*': (x, y) => +x * +y,
+    '/': (x, y) => +y !== 0 ? +x / +y : '3rr0r',
+    '**': (x, y) => (+x) ** (+y),
+    // Operar y mostrar el resultado en el display
+    resultado: operacion => {
+        resultado.textContent = calculadora[operacion](operador1.textContent, operador2.textContent)
+    }
+}
+
+// pasa el valor a la primera casilla
+const realizarOperacion = operacion => {
+    limpiezaResultado = false
+    if(operando.textContent === ''){
+        operador1.textContent = +operador1.textContent
+        operador2.textContent = ''
+        operando.textContent = operacion
+        return
+    }
+    if(operacion === '=') {
+        calculadora.resultado(operando.textContent)
+        limpiezaResultado = true
+        return
+    }
+    // if doble signo igual
+    // bloquea el operador 1
+    // da marca visual
+    //
+    calculadora.resultado(operando.textContent)
+    operador1.textContent = resultado.textContent
+    operando.textContent = operacion
+    operador2.textContent = ''
+}
 
 // asignación de funciones al teclado
-botonesTeclado.addEventListener('click', evento => {
+teclado.addEventListener('click', evento => {
     if(evento.target.tagName !== 'BUTTON') return
     const boton = evento.target.textContent
-    // introducir un número
+
     if(/^[0-9.]|^\+.\-$/.test(boton)) ingresarDigito(boton)
-    
-    if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) console.log(boton) // mejorar ese regex
-    
+    if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) realizarOperacion(boton)
     if(/[A-M]/.test(boton)) console.log('memoria ' + boton)
 
     // boton de borrar pantalla temporal
-    if(boton === 'C') display.textContent = 0
+    if(boton === 'C') {
+        resultado.textContent = ''
+        operador1.textContent = ''
+        operador2.textContent = ''
+        operando.textContent = ''
+
+    } 
 })
-
-// Regex MEMORIA = /[A-M]+\d|[A-M]/
-
-// calculadora
-// toma un valor
-// toma un operador
-// toma un segundo valor
-//
-
 
