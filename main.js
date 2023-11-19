@@ -142,6 +142,8 @@ const realizarOperacion = operacion => {
 // asignación de funciones al teclado
 teclado.addEventListener('click', evento => {
     if(evento.target.tagName !== 'BUTTON') return
+    if(resultado.textContent === '3rr0r') pantalla.reset()
+
     const boton = evento.target.textContent
     if(/^[0-9.]|^\+.\-$/.test(boton)) ingresarDigito(boton)
     if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) realizarOperacion(boton)
