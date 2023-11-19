@@ -10,6 +10,8 @@
     --color-operacion-oprimido: #9e7328;
     --color-advertencia: #ca4830;
     --color-advertencia-oprimido: #963524;
+
+    --memoria-1: 'M1»'
 }
 * { 
     margin: 0;
@@ -88,14 +90,35 @@ body {
     color: var(--color-frente);
 }
 .operacion--activo::after {
-    position: absolute;
-    top: 1.6rem;
-    width: 1ch;
-    height: 0.2rem;
-    content: '';
-    background-color: var(--color-texto);
+    content: '_';
     animation: parpadeo 0.8s steps(1) infinite;
 }
+.operacion--resultado::after {
+    content: '=';
+    margin: 0 1ch;
+}
+.operacion--respuesta::before,
+.operacion--memoria1::before,
+.operacion--memoria2::before,
+.operacion--memoria3::before {
+    color: var(--color-fondo);
+}
+.operacion--respuesta::before {
+    content: 'R>';
+}
+.operacion--lock {
+    color: var(--color-operacion);
+}
+.operacion--memoria1::before {
+    content: 'M1»';
+}
+.operacion--memoria2::before {
+    content: 'M2»';
+}
+.operacion--memoria3::before {
+    content: 'M3»';
+}
+
 .pantalla__resultado {
     color: var(--color-frente);
     height: 43px;
