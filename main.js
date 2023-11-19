@@ -4,8 +4,8 @@ const operando1 = document.getElementById('operacion').firstElementChild
 const operando2 = document.getElementById('operacion').lastElementChild
 const operador = document.getElementById('operacion').children[1]
 const resultado = document.getElementById('resultado')
+const teclado = document.getElementById('teclado')
 
-// se crea un objeto que almacena el estado de la pantalla y los métodos para modificarla
 const pantalla = {
     reset: () => {
         operando1.removeAttribute('class')
@@ -35,7 +35,7 @@ const pantalla = {
         }
     },
 
-    primerDigitoBloqueo : false,
+    digitoLock : false,
     bloquearOperacion: activa => {
         if(activa) {
             operando1.classList.toggle('operacion--lock')
@@ -49,14 +49,11 @@ const pantalla = {
 pantalla.cambiarEstado(0, false, false)
 pantalla.bloquearOperacion(false)
 
-const teclado = document.getElementById('teclado')
 const ingresarDigito = digito => {
     if(operando2.classList.contains('operacion--resultado')) pantalla.reset()
-    if(operador.classList.contains('operacion--lock')) {
-        if(pantalla.primerDigitoBloqueo) {
-            operando2.textContent = ''
-            pantalla.primerDigitoBloqueo = false
-        }
+    if(operador.classList.contains('operacion--lock') || pantalla.digitoLock) {
+        operando2.textContent = ''
+        pantalla.digitoLock = false
     }
     const casilla = operador.textContent === '' ? operando1 : operando2
     
@@ -80,6 +77,11 @@ const calc = {
     '*': (x, y) => +x * +y,
     '/': (x, y) => +y !== 0 ? +x / +y : '3rr0r',
     '**': (x, y) => (+x) ** (+y),
+    '% de': (x, y) => (+y * +x) / 100,
+    '% más': (x, y) => ((+y * +x) / 100) + +y,
+    '% menos': (x, y) => +y - ((+y * +x) / 100),
+    '% incremento': (x, y) => (+y * 100) / (100 - +x),
+    'diferencia': (x, y) => ((+y * 100) / (100 - +x)) - +y,
 
     resultado: operacion => {
         let answer = calc[operacion](operando1.textContent, operando2.textContent)
@@ -95,20 +97,20 @@ const calc = {
     }
 }
 
-const realizarOperacion = operacion => {
+const ingresarOperacion = operacion => {
     if(operando1.textContent === '') return
     if(operacion === '=' && (!operador.textContent || !operando2.textContent)) return
     if(operador.textContent === ''){
         operando1.textContent = +operando1.textContent
         operando2.textContent = ''
-        operador.textContent = operacion
+        operador.textContent = operacion !== '%' ? operacion : '% de'
         pantalla.cambiarEstado(1, false, false)
         return
     }
     if(operacion === '=') {
         if(operador.classList.contains('operacion--lock')) {
             calc.resultado(operador.textContent)
-            pantalla.primerDigitoBloqueo = true
+            pantalla.digitoLock = true
             pantalla.cambiarEstado(1, false, false)
             return
         }
@@ -120,19 +122,43 @@ const realizarOperacion = operacion => {
 
     if(/^[+\-*\/]$/.test(operacion) && operacion === operador.textContent) {
         pantalla.bloquearOperacion(true)
-        pantalla.primerDigitoBloqueo = !pantalla.primerDigitoBloqueo
+        pantalla.digitoLock = !pantalla.digitoLock
     } else {
         pantalla.bloquearOperacion(false)
     }
+
+    if(/^%/.test(operador.textContent)) {
+        if(operando2.classList.contains('operacion--resultado')) {
+            if(/o$/.test(operador.textContent) && operacion === '-') {
+                operador.textContent = 'diferencia'
+                calc.resultado(operador.textContent)
+                return
+            }
+            //
+                //
+                //
+                // Acá hay un chicharrón
+                //
+                //
+                //
+            // pantalla.reset()
+            // return
+        }
+        if(operacion === '%') operador.textContent = '% de'
+        if(operacion === '+') operador.textContent = '% más'
+        if(operacion === '-') operador.textContent = '% menos'
+        if(operacion === '*') operador.textContent = '% incremento'
+        return
+    }
     
     if(operando2.textContent === ''){
-        operador.textContent = operacion
+        operador.textContent = operacion !== '%' ? operacion : '% de'
         return
     }
 
     calc.resultado(operador.textContent)
     operando1.textContent = resultado.textContent
-    operador.textContent = operacion
+        operador.textContent = operacion !== '%' ? operacion : '% de'
     operando2.textContent = ''
     resultado.textContent = ''
     pantalla.cambiarEstado(1, false, true)
@@ -143,10 +169,9 @@ const realizarOperacion = operacion => {
 teclado.addEventListener('click', evento => {
     if(evento.target.tagName !== 'BUTTON') return
     if(resultado.textContent === '3rr0r') pantalla.reset()
-
     const boton = evento.target.textContent
     if(/^[0-9.]|^\+.\-$/.test(boton)) ingresarDigito(boton)
-    if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) realizarOperacion(boton)
+    if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) ingresarOperacion(boton)
     if(/[A-M]/.test(boton)) console.log(boton)
 
     // boton de borrar pantalla temporal
