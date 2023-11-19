@@ -128,27 +128,19 @@ const ingresarOperacion = operacion => {
     }
 
     if(/^%/.test(operador.textContent)) {
-        if(operando2.classList.contains('operacion--resultado')) {
-            if(/o$/.test(operador.textContent) && operacion === '-') {
-                operador.textContent = 'diferencia'
-                calc.resultado(operador.textContent)
-                return
-            }
-            //
-                //
-                //
-                // Acá hay un chicharrón
-                //
-                //
-                //
-            // pantalla.reset()
-            // return
+        if(/o$/.test(operador.textContent) && operacion === '-') {
+            operador.textContent = 'diferencia'
+            calc.resultado(operador.textContent)
+            return
         }
-        if(operacion === '%') operador.textContent = '% de'
-        if(operacion === '+') operador.textContent = '% más'
-        if(operacion === '-') operador.textContent = '% menos'
-        if(operacion === '*') operador.textContent = '% incremento'
-        return
+        if(!operando2.classList.contains('operacion--resultado')) {
+            if(operacion === '%') operador.textContent = '% de'
+            if(operacion === '+') operador.textContent = '% más'
+            if(operacion === '-') operador.textContent = '% menos'
+            if(operacion === '*') operador.textContent = '% incremento'
+            return
+
+        }
     }
     
     if(operando2.textContent === ''){
