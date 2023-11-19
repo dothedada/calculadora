@@ -49,12 +49,6 @@ const pantalla = {
 pantalla.cambiarEstado(0, false, false)
 pantalla.bloquearOperacion(false)
 
-const patito = '123.1'
-console.log(Number(30.1234567).toFixed(5))
-console.log(+parseFloat(patito).toFixed(5))
-
-
-
 const teclado = document.getElementById('teclado')
 const ingresarDigito = digito => {
     if(operando2.classList.contains('operacion--resultado')) pantalla.reset()
@@ -86,9 +80,18 @@ const calc = {
     '*': (x, y) => +x * +y,
     '/': (x, y) => +y !== 0 ? +x / +y : '3rr0r',
     '**': (x, y) => (+x) ** (+y),
-    // Operar y mostrar el resultado en el display
+
     resultado: operacion => {
-        resultado.textContent = calc[operacion](operando1.textContent, operando2.textContent)
+        let answer = calc[operacion](operando1.textContent, operando2.textContent)
+        // A partir de la longitud determina si lo pasa a notación científica o acorta decimales
+        if(parseFloat(+answer).toString().length > 10) {
+            if(Math.round(+answer).toString().length > 10) {
+                answer = parseFloat(+answer).toExponential(4)
+            } else {
+                answer = +parseFloat(+answer).toFixed(10 - Math.round(+answer).toString().length)
+            }
+        }
+        resultado.textContent = answer
     }
 }
 
