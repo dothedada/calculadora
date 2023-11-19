@@ -1,76 +1,36 @@
 const memoria = document.getElementById('memoria')
 
-const operador1 = document.getElementById('operacion').firstElementChild
-const operador2 = document.getElementById('operacion').lastElementChild
-const operando = document.getElementById('operacion').children[1]
+const operando1 = document.getElementById('operacion').firstElementChild
+const operando2 = document.getElementById('operacion').lastElementChild
+const operador = document.getElementById('operacion').children[1]
 const resultado = document.getElementById('resultado')
 
-const estadoPantalla = {
-    operadores : [operador1, operador2],
-    cursor: 0, // posicion variable
-    respuesta: false,
-    operacionRecurrente: false,
-    memoriaOperador: 0, // posicion variable
+// se crea un objeto que almacena el estado de la pantalla y los métodos para modificarla
+const pantalla = {
+    // posicion variable
+    // respuesta: false,
+    // operacionRecurrente: false,
 
-    resetear: () => {
-        operador1.removeAttribute('class')
-        operador2.removeAttribute('class')
-        operando.removeAttribute('class')
-        // estadoPantalla.cambiarEstado(0)
-    },
-
-    cambiarEstado: (posCursor, usoRespuesta, opRecurrente, memOperador) => {
+    cambiarEstado: (posCursor = undefined, resultado = undefined) => {
         if(posCursor !== undefined){
-            estadoPantalla.cursor = posCursor
-            estadoPantalla.operadores[posCursor].classList.add('operacion--activo')
-            estadoPantalla.operadores[-(posCursor - 1)].classList.remove('operacion--activo')
+            operando1.classList.remove('operacion--activo')
+            operando2.classList.remove('operacion--activo')
+            if(posCursor === 0) operando1.classList.add('operacion--activo')
+            if(posCursor === 1) operando2.classList.add('operacion--activo')
         }
-        if(usoRespuesta !== undefined) {
-            estadoPantalla.respuesta = usoRespuesta
-            if(usoRespuesta){
-                operador1.classList.add('operacion--respuesta')
-            } else {
-                operador1.classList.remove('operacion--respuesta')
-            }
-        }
-        if(opRecurrente !== undefined) {
-            estadoPantalla.operacionRecurrente = opRecurrente
-            if(opRecurrente) {
-                console.log('patito')
-                operador1.classList.add('operacion-lock')
-                operando.classList.add('operacion-lock')
-            } else {
-                operador1.classList.remove('operacion-lock')
-                operando.classList.remove('operacion-lock')
-            }
+
+        if(resultado !== undefined) {
+            operando2.classList.remove('operacion--resultado')
+            if(resultado) operando2.classList.add('operacion--resultado')
         }
     }
 }
+pantalla.cambiarEstado(0, false)
 
-
-estadoPantalla.cambiarEstado(1, false, true)
-// let ubicacionCursor, usoRespuesta, operacionBloqueada, memoriaOperador1, memoriaOperador2
-// const estadoPantalla = (cursor, respuesta, candado, memoriaOp1, memoriaOp2) => {
-//     operador1.removeAttribute('class')
-//     operador2.removeAttribute('class')
-//     operando.removeAttribute('class')
-//     if(cursor){
-//         operador2.classList.add('operacion--activo')
-//     } else {
-//         operador1.classList.add('operacion--activo')
-//     }
-//     if(respuesta) operador1.classList.add('operacion--respuesta')
-//     if(candado){
-//         operador1.classList.add('operacion--lock')
-//         operando.classList.add('operacion--lock')
-//     }
-//     if(memoriaOp1) operador1.classList.add(`operacion--memoria${memoriaOp1}`)
-//     if(memoriaOp2) operador2.classList.add(`operacion--memoria${memoriaOp2}`)
-// }
 
 const teclado = document.getElementById('teclado')
 const ingresarDigito = digito => {
-    const casilla = operando.textContent === '' ? operador1 : operador2
+    const casilla = operador.textContent === '' ? operando1 : operando2
     if(digito === 'C') casilla.textContent = ''
     if(digito === '+/-' && +casilla.textContent) casilla.textContent = -casilla.textContent
     if(digito === '.') casilla.textContent = `${+casilla.textContent.split('.').join('')}.`
@@ -84,7 +44,7 @@ const ingresarDigito = digito => {
     }
 }
 
-const calculadora = {
+const calc = {
     '+': (x, y) => +x + +y,
     '-': (x, y) => +x - +y,
     '*': (x, y) => +x * +y,
@@ -92,49 +52,35 @@ const calculadora = {
     '**': (x, y) => (+x) ** (+y),
     // Operar y mostrar el resultado en el display
     resultado: operacion => {
-        resultado.textContent = calculadora[operacion](operador1.textContent, operador2.textContent)
+        resultado.textContent = calc[operacion](operando1.textContent, operando2.textContent)
     }
 }
 
 const realizarOperacion = operacion => {
-    if(operacion === '=' && (!operando.textContent || !operador2.textContent)) return
-    if(operando.textContent === ''){
-        operador1.textContent = +operador1.textContent
-        operador2.textContent = ''
-        operando.textContent = operacion
-        operador1.classList.remove('operacion--activo')
-        operador2.classList.add('operacion--activo')
-        return
-    }
-    if(operando.textContent === operacion) {
-        operador1.classList.toggle('operacion--lock')
-
+    if(operacion === '=' && (!operador.textContent || !operando2.textContent)) return
+    if(operador.textContent === ''){
+        operando1.textContent = +operando1.textContent
+        operando2.textContent = ''
+        operador.textContent = operacion
+        pantalla.cambiarEstado(1, false)
         return
     }
     if(operacion === '=') {
-        if(operador1.classList.contains('operacion--lock')){
-            calculadora.resultado(operando.textContent)
-            operador2.textContent = ''
-            return
-        }
-        calculadora.resultado(operando.textContent)
-        operador1.classList.remove('operacion--respuesta')
-        operador2.classList.remove('operacion--activo')
-        operador2.classList.add('operacion--resultado')
+        calc.resultado(operador.textContent)
+        pantalla.cambiarEstado(2, true)
         return
     }
-    if(operador2.textContent === ''){
-        operando.textContent = operacion
+    if(operando2.textContent === ''){
+        operador.textContent = operacion
         return
     }
-    calculadora.resultado(operando.textContent)
-    operador1.textContent = resultado.textContent
-    operando.textContent = operacion
-    operador2.textContent = ''
-    operador2.classList.add('operacion--activo')
-    operador2.classList.remove('operacion--resultado')
-    operador1.classList.add('operacion--respuesta')
+    calc.resultado(operador.textContent)
+    operando1.textContent = resultado.textContent
+    operador.textContent = operacion
+    operando2.textContent = ''
     resultado.textContent =''
+
+    pantalla.cambiarEstado(1, false)
 }
 
 // asignación de funciones al teclado
@@ -154,13 +100,13 @@ teclado.addEventListener('click', evento => {
     }
     if(boton === 'AC'){
         resultado.textContent = ''
-        operador1.textContent = ''
-        operador2.textContent = ''
-        operando.textContent = ''
-        operador1.classList.add('operacion--activo')
-        operador2.classList.remove('operacion--activo')
-        operador2.classList.remove('operacion--resultado')
-        operador1.classList.remove('operacion--respuesta')
+        operando1.textContent = ''
+        operando2.textContent = ''
+        operador.textContent = ''
+        operando1.classList.add('operacion--activo')
+        operando2.classList.remove('operacion--activo')
+        operando2.classList.remove('operacion--resultado')
+        operando1.classList.remove('operacion--respuesta')
         evento.target.textContent = 'C'
 
     } 
