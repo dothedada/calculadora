@@ -18,20 +18,14 @@ const pantalla = {
     },
 
     cambiarEstado: (posCursor, signoResultado, respuesta) => {
-        if(posCursor !== undefined){
-            operando1.classList.remove('operacion--activo')
-            operando2.classList.remove('operacion--activo')
-            if(posCursor === 0) operando1.classList.add('operacion--activo')
-            if(posCursor === 1) operando2.classList.add('operacion--activo')
-        }
-        if(signoResultado !== undefined) {
-            operando2.classList.remove('operacion--resultado')
-            if(signoResultado) operando2.classList.add('operacion--resultado')
-        }
-        if(respuesta !== undefined){
-            operando1.classList.remove('operacion--respuesta')
-            if(respuesta) operando1.classList.add('operacion--respuesta')
-        }
+        operando1.classList.remove('operacion--activo')
+        operando2.classList.remove('operacion--activo')
+        if(posCursor === 0) operando1.classList.add('operacion--activo')
+        if(posCursor === 1) operando2.classList.add('operacion--activo')
+        operando2.classList.remove('operacion--resultado')
+        if(signoResultado) operando2.classList.add('operacion--resultado')
+        operando1.classList.remove('operacion--respuesta')
+        if(respuesta) operando1.classList.add('operacion--respuesta')
     },
 
     digitoLock : false,
@@ -152,15 +146,17 @@ const ingresarOperacion = operacion => {
 const manejarMemoria = boton => {
     const celdaActiva = document.getElementsByClassName('operacion--activo')[0]
     if(boton === 'C') {
-        celdaActiva.textContent = ''
-        teclado.firstElementChild.firstElementChild.textContent = 'AC'
+        if(celdaActiva) {
+            celdaActiva.textContent = ''
+            teclado.firstElementChild.firstElementChild.textContent = 'AC'
+            return
+        }
+        pantalla.reset()
     }
-    if(boton === 'AC') pantalla.reset()
-
-    // La evaluacion dentro del comentario es la final
-    // if(/^M/.test(boton) && resultado.textContent !== '') {
-    if(/^M/.test(boton)) {
-
+    if(boton === 'AC'){
+        pantalla.reset()
+    }
+    if(/^M/.test(boton) && resultado.textContent !== '') {
         let espacioDisponible = Array.from(memoria.children).find( casilla => {
             return casilla.firstElementChild.textContent === `${boton}»`
         })
@@ -177,10 +173,16 @@ const manejarMemoria = boton => {
             memoriaValor.textContent = resultado.textContent
             memoriaAsignada.appendChild(memoriaNombre)
             memoriaAsignada.appendChild(memoriaValor)
-            memoria.insertBefore(memoriaAsignada, memoria.firstElementChild)
-
+            memoria.insertBefore(memoriaAsignada, memoria.firstChild)
         } 
     }
+    if(boton === 'CM'){
+        const espaciosBorrar = Array.from(memoria.children).filter( casilla => {
+            return /^M/.test(casilla.firstElementChild.textContent)
+        })
+        espaciosBorrar.forEach(espacio => espacio.remove())
+    }
+
 }
 
 // asignación de funciones al teclado
