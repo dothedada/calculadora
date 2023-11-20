@@ -52,12 +52,9 @@ const ingresarDigito = digito => {
     if(operando2.classList.contains('operacion--resultado')) pantalla.reset()
     if(operador.classList.contains('operacion--lock') && pantalla.digitoLock) {
         operando2.textContent = ''
-        console.log(pantalla.digitoLock)
         pantalla.digitoLock = false
     }
     const casilla = operador.textContent === '' ? operando1 : operando2
-    
-    if(digito === 'C') casilla.textContent = '' // evaluar una mejor posicion
 
     if(digito === '+/-' && +casilla.textContent) casilla.textContent = -casilla.textContent
     if(digito === '.') casilla.textContent = `${+casilla.textContent.split('.').join('')}.`
@@ -152,6 +149,40 @@ const ingresarOperacion = operacion => {
     pantalla.bloquearOperacion(false)
 }
 
+const manejarMemoria = boton => {
+    const celdaActiva = document.getElementsByClassName('operacion--activo')[0]
+    if(boton === 'C') {
+        celdaActiva.textContent = ''
+        teclado.firstElementChild.firstElementChild.textContent = 'AC'
+    }
+    if(boton === 'AC') pantalla.reset()
+
+    // La evaluacion dentro del comentario es la final
+    // if(/^M/.test(boton) && resultado.textContent !== '') {
+    if(/^M/.test(boton)) {
+
+        let espacioDisponible = Array.from(memoria.children).find( casilla => {
+            return casilla.firstElementChild.textContent === `${boton}»`
+        })
+        if(espacioDisponible){
+            espacioDisponible.lastElementChild.textContent = resultado.textContent 
+        } else {
+            const memoriaAsignada = document.createElement('div')
+            const memoriaNombre = document.createElement('span')
+            const memoriaValor = document.createElement('span')
+            memoriaAsignada.classList.add('respuesta')
+            memoriaNombre.classList.add('respuesta__teclado')
+            memoriaValor.classList.add('respuesta__resultado')
+            memoriaNombre.textContent = `${boton}»`
+            memoriaValor.textContent = resultado.textContent
+            memoriaAsignada.appendChild(memoriaNombre)
+            memoriaAsignada.appendChild(memoriaValor)
+            memoria.insertBefore(memoriaAsignada, memoria.firstElementChild)
+
+        } 
+    }
+}
+
 // asignación de funciones al teclado
 teclado.addEventListener('click', evento => {
     if(evento.target.tagName !== 'BUTTON') return
@@ -159,17 +190,7 @@ teclado.addEventListener('click', evento => {
     const boton = evento.target.textContent
     if(/^[0-9.]|^\+.\-$/.test(boton)) ingresarDigito(boton)
     if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) ingresarOperacion(boton)
-    if(/[A-M]/.test(boton)) console.log(boton)
-
-    // boton de borrar pantalla temporal
-    if(boton === 'C') {
-        ingresarDigito(boton)
-        evento.target.textContent = 'AC'
-    }
-    if(boton === 'AC'){
-        pantalla.reset()
-        evento.target.textContent = 'C'
-
-    } 
+    teclado.firstElementChild.firstElementChild.textContent = 'C'
+    if(/[A-M]/.test(boton)) manejarMemoria(boton)
 })
 
