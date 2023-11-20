@@ -10,9 +10,6 @@
     --color-operacion-oprimido: #9e7328;
     --color-advertencia: #ca4830;
     --color-advertencia-oprimido: #963524;
-
-    --operando1-memoria: 'M1»';
-    --operando2-memoria: 'M2»';
 }
 * { 
     margin: 0;
@@ -25,7 +22,6 @@ body {
     background-color: var(--color-fondo);
     font-family: 'Fira Code', monospace;
 }
-
 .calculadora {
     margin: 1rem auto 0;
     width: 17rem;
@@ -34,7 +30,6 @@ body {
     flex-direction: column;
     align-items: center;
 }
-
 .respuestas {
     display: flex;
     flex-direction: column-reverse;
@@ -92,7 +87,7 @@ body {
 }
 .operacion--activo::after {
     content: '_';
-    animation: parpadeo 0.8s steps(1) infinite;
+    animation: cursor 0.8s steps(1) infinite;
 }
 .operacion--resultado::after {
     content: '=';
@@ -105,14 +100,12 @@ body {
 .operacion--lock {
     color: var(--color-operacion);
 }
-
 .pantalla__resultado {
     color: var(--color-frente);
     height: 43px;
     font-size: 2rem;
     text-align: right;
 }
-
 .teclado,
 .teclado > * {
     display: flex;
@@ -131,7 +124,6 @@ body {
     flex-wrap: wrap;
     max-height: 14rem;
 }
-
 .boton {
     --_color-boton: var(--color-boton, var(--color-intermedio));
     box-sizing: border-box;
@@ -162,12 +154,6 @@ body {
     border-radius: 0.5rem;
     background-color: var(--color-boton, var(--color-intermedio-oprimido));
 }
-.boton__superIndice {
-    font-size: 0.7rem;
-    vertical-align: super;
-    position: relative;
-    top: -0.2rem;
-}
 .boton--borrar {
     --color-boton: var(--color-advertencia);
 }
@@ -186,7 +172,7 @@ body {
 .boton--doble {
     height: 6.5rem;
 }
-@keyframes parpadeo {
+@keyframes cursor {
     50% {
         opacity: 0;
     }
