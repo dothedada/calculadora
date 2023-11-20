@@ -1,5 +1,4 @@
 const memoria = document.getElementById('memoria')
-
 const operando1 = document.getElementById('operacion').firstElementChild
 const operando2 = document.getElementById('operacion').lastElementChild
 const operador = document.getElementById('operacion').children[1]
@@ -51,8 +50,9 @@ pantalla.bloquearOperacion(false)
 
 const ingresarDigito = digito => {
     if(operando2.classList.contains('operacion--resultado')) pantalla.reset()
-    if(operador.classList.contains('operacion--lock') || pantalla.digitoLock) {
+    if(operador.classList.contains('operacion--lock') && pantalla.digitoLock) {
         operando2.textContent = ''
+        console.log(pantalla.digitoLock)
         pantalla.digitoLock = false
     }
     const casilla = operador.textContent === '' ? operando1 : operando2
@@ -81,7 +81,7 @@ const calc = {
     '% más': (x, y) => ((+y * +x) / 100) + +y,
     '% menos': (x, y) => +y - ((+y * +x) / 100),
     '% incremento': (x, y) => (+y * 100) / (100 - +x),
-    'diferencia': (x, y) => ((+y * 100) / (100 - +x)) - +y,
+    'corresponde': (x, y) => ((+y * 100) / (100 - +x)) - +y,
 
     resultado: operacion => {
         let answer = calc[operacion](operando1.textContent, operando2.textContent)
@@ -99,7 +99,7 @@ const calc = {
 
 const ingresarOperacion = operacion => {
     if(operando1.textContent === '') return
-    if(operacion === '=' && (!operador.textContent || !operando2.textContent)) return
+    if(operacion === '=' && !operando2.textContent) return
     if(operador.textContent === ''){
         operando1.textContent = +operando1.textContent
         operando2.textContent = ''
@@ -108,29 +108,27 @@ const ingresarOperacion = operacion => {
         return
     }
     if(operacion === '=') {
+        calc.resultado(operador.textContent)
         if(operador.classList.contains('operacion--lock')) {
-            calc.resultado(operador.textContent)
             pantalla.digitoLock = true
             pantalla.cambiarEstado(1, false, false)
             return
         }
-
-        calc.resultado(operador.textContent)
         pantalla.cambiarEstado(2, true, false)
         return
     }
-
     if(/^[+\-*\/]$/.test(operacion) && operacion === operador.textContent) {
         pantalla.bloquearOperacion(true)
         pantalla.digitoLock = !pantalla.digitoLock
     } else {
         pantalla.bloquearOperacion(false)
     }
-
     if(/^%/.test(operador.textContent)) {
         if(/o$/.test(operador.textContent) && operacion === '-') {
-            operador.textContent = 'diferencia'
+            operador.textContent = 'corresponde'
             calc.resultado(operador.textContent)
+            operando1.textContent += `%` 
+            operando2.textContent = 'a'
             return
         }
         if(!operando2.classList.contains('operacion--resultado')) {
@@ -139,18 +137,15 @@ const ingresarOperacion = operacion => {
             if(operacion === '-') operador.textContent = '% menos'
             if(operacion === '*') operador.textContent = '% incremento'
             return
-
         }
     }
-    
     if(operando2.textContent === ''){
         operador.textContent = operacion !== '%' ? operacion : '% de'
         return
     }
-
     calc.resultado(operador.textContent)
+    operador.textContent = operacion !== '%' ? operacion : '% de'
     operando1.textContent = resultado.textContent
-        operador.textContent = operacion !== '%' ? operacion : '% de'
     operando2.textContent = ''
     resultado.textContent = ''
     pantalla.cambiarEstado(1, false, true)
