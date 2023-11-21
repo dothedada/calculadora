@@ -1,9 +1,14 @@
 const memoria = document.getElementById('memoria')
-const operando1 = document.getElementById('operacion').firstElementChild
-const operando2 = document.getElementById('operacion').lastElementChild
-const operador = document.getElementById('operacion').children[1]
+const operando1 = document.getElementById('operando1')
+const operando2 = document.getElementById('operando2')
+const operador = document.getElementById('operador')
 const resultado = document.getElementById('resultado')
 const teclado = document.getElementById('teclado')
+
+    // Cargar las respuestas a los espacios de memoria no fija
+    // Crear la secuencia de trabajo para administración de la memoria
+    // Hacer empleables los espacios de memoria
+    // Habilitar el uso de techlado
 
 const pantalla = {
     reset: () => {
@@ -72,7 +77,7 @@ const calc = {
     '% más': (x, y) => ((+y * +x) / 100) + +y,
     '% menos': (x, y) => +y - ((+y * +x) / 100),
     '% incremento': (x, y) => (+y * 100) / (100 - +x),
-    'corresponde': (x, y) => ((+y * 100) / (100 - +x)) - +y,
+    corresponde: (x, y) => ((+y * 100) / (100 - +x)) - +y,
 
     resultado: operacion => {
         let answer = calc[operacion](operando1.textContent, operando2.textContent)
@@ -100,6 +105,7 @@ const ingresarOperacion = operacion => {
     }
     if(operacion === '=') {
         calc.resultado(operador.textContent)
+        crearEspacioMemoria('=')
         if(operador.classList.contains('operacion--lock')) {
             pantalla.digitoLock = true
             pantalla.cambiarEstado(1, false, false)
@@ -118,7 +124,7 @@ const ingresarOperacion = operacion => {
         if(/o$/.test(operador.textContent) && operacion === '-') {
             operador.textContent = 'corresponde'
             calc.resultado(operador.textContent)
-            operando1.textContent += `%` 
+            operando1.textContent += '%' 
             operando2.textContent = 'a'
             return
         }
@@ -143,6 +149,31 @@ const ingresarOperacion = operacion => {
     pantalla.bloquearOperacion(false)
 }
 
+const crearEspacioMemoria = boton => {
+    // máximo 8 espacios
+    // deshabilitar si ya existe una memoria con ese valor
+    const memoriaAsignada = document.createElement('div')
+    const memoriaNombre = document.createElement('span')
+    const memoriaValor = document.createElement('span')
+    memoriaAsignada.classList.add('respuesta')
+    memoriaNombre.classList.add('respuesta__teclado')
+    memoriaValor.classList.add('respuesta__resultado')
+    memoriaNombre.textContent = boton === '='? 'R>' : `${boton}»`
+    memoriaValor.textContent = resultado.textContent
+    memoriaAsignada.appendChild(memoriaNombre)
+    memoriaAsignada.appendChild(memoriaValor)
+    if(boton === '=') {
+        const memoriaOperacion = document.createElement('span')
+        memoriaOperacion.classList.add('respuesta__operacion')
+        // el máximo son 24 caracteres
+        // ojo a las operaciones con % 
+        memoriaOperacion.textContent = `${operando1.textContent} ${operador.textContent} ${operando2.textContent}`
+        memoriaAsignada.insertBefore(memoriaOperacion, memoriaValor)
+    }
+    memoria.insertBefore(memoriaAsignada, memoria.firstChild)
+
+}
+
 const manejarMemoria = boton => {
     const celdaActiva = document.getElementsByClassName('operacion--activo')[0]
     if(boton === 'C') {
@@ -157,26 +188,22 @@ const manejarMemoria = boton => {
         pantalla.reset()
     }
     if(/^M/.test(boton) && resultado.textContent !== '') {
-        let espacioDisponible = Array.from(memoria.children).find( casilla => {
+        // cargar sólo una vez esa memoria, carga el valor del espacio activo o del resultado?
+            // una vez cargada, retira el estilo de memoria vacía
+        const espacioDisponible = Array.from(memoria.children).find( casilla => {
             return casilla.firstElementChild.textContent === `${boton}»`
         })
         if(espacioDisponible){
             espacioDisponible.lastElementChild.textContent = resultado.textContent 
         } else {
-            const memoriaAsignada = document.createElement('div')
-            const memoriaNombre = document.createElement('span')
-            const memoriaValor = document.createElement('span')
-            memoriaAsignada.classList.add('respuesta')
-            memoriaNombre.classList.add('respuesta__teclado')
-            memoriaValor.classList.add('respuesta__resultado')
-            memoriaNombre.textContent = `${boton}»`
-            memoriaValor.textContent = resultado.textContent
-            memoriaAsignada.appendChild(memoriaNombre)
-            memoriaAsignada.appendChild(memoriaValor)
-            memoria.insertBefore(memoriaAsignada, memoria.firstChild)
+            crearEspacioMemoria(boton)
         } 
     }
-    if(boton === 'CM'){
+    if(boton === 'LM'){
+        // Una vez existe algún elemento en memoria, elimina el estilo de vacío
+        // Cuando no hay nada que borrar se pone vacío
+        // Se oprime una vez y permite borrar la memoria que se oprima
+        // al oprimirlo dos veces consecutivas borra todas las respuestas => LM* ó LTM? ?
         const espaciosBorrar = Array.from(memoria.children).filter( casilla => {
             return /^M/.test(casilla.firstElementChild.textContent)
         })

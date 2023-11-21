@@ -3,40 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Calculadora 🧮</title>
+    <title>♫ Calcúlame ♫ calcúlame ♩ calculadora</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="calculadora">
 
-        <div id="memoria" class="respuestas">
-            <!-- hasta 3 páneles de memoria y 5 de respuestas-->
-            <div class="respuesta">
-                <span class="respuesta__teclado">↑1></span>
-                <span class="respuesta__operacion">1234…*7890…</span>
-                <span class="respuesta__resultado">1234</span>
-            </div>
-        </div>
+        <div id="memoria" class="respuestas"></div>
 
-        <div class="pantalla"> 
-            <div id="operacion" class="operacion">
-                <span></span>
-                <span></span>
-                <span></span>
+        <div class="pantalla">
+            <div class="operacion">
+                <span id="operando1"></span>
+                <span id="operador"></span>
+                <span id="operando2"></span>
             </div>
             <div id="resultado" class="pantalla__resultado"></div>
         </div>
 
         <div id="teclado" class="teclado">
-            <!-- Sección de funciones de memoria -->
             <div class="teclado__memoria">
                 <button class="boton boton--borrar">C</button>
-                <button class="boton boton--memoria">M1</button>
+                <button class="boton boton--memoria boton--mVacia">M1</button>
                 <button class="boton boton--memoria">M2</button>
                 <button class="boton boton--memoria">M3</button>
-                <button class="boton boton--borrar">CM</button>
+                <button class="boton boton--borrar boton--mVacia">LM</button>
             </div>
-            <!-- Sección del teclado numérico -->
             <div class="teclado__numerico">
                 <button class="boton">+/-</button>
                 <button class="boton">.</button>
@@ -51,12 +42,10 @@
                 <button class="boton">8</button>
                 <button class="boton">9</button>
             </div>
-            <!-- Sección del teclado de operaciones -->
             <div class="teclado__operaciones">
                 <button class="boton boton--operacion boton--doble">+</button>
                 <button class="boton boton--operacion">*</button>
                 <button class="boton boton--operacion">**</button>
-                <!-- <button class="boton boton--operacion">X<span class="boton__superIndice">y</span></button> -->
                 <button class="boton boton--operacion">=</button>
                 <button class="boton boton--operacion">-</button>
                 <button class="boton boton--operacion">/</button>

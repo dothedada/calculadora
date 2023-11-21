@@ -45,7 +45,7 @@ body {
 }
 .respuesta:hover {
     background-color: var(--color-blanco);
-    border-radius: 4px;
+    border-radius: 0.3rem;
 }
 .respuesta:first-child {
     margin: 0 0 1rem;
@@ -80,7 +80,7 @@ body {
 }
 .operacion {
     display: block;
-    height: 22px;
+    height: 1.4rem;
 }
 .operacion__operador {
     color: var(--color-frente);
@@ -102,7 +102,7 @@ body {
 }
 .pantalla__resultado {
     color: var(--color-frente);
-    height: 43px;
+    height: 2.7rem;
     font-size: 2rem;
     text-align: right;
 }
@@ -162,6 +162,10 @@ body {
 }
 .boton--memoria {
     --color-boton: var(--color-frente);
+}
+.boton--mVacia {
+    background: none;
+    color: var(--color-frente);
 }
 .boton--operacion {
     --color-boton: var(--color-operacion);
