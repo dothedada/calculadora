@@ -5,8 +5,6 @@ const operador = document.getElementById('operador')
 const resultado = document.getElementById('resultado')
 const teclado = document.getElementById('teclado')
 
-    // Cargar las respuestas a los espacios de memoria no fija
-    // Hacer empleables los espacios de memoria
     // Habilitar el uso de techlado
 const pantalla = {
     reset: () => {
@@ -117,7 +115,7 @@ const ingresarOperacion = operacion => {
 
     if(operacion === '=') {
         // bloquear iguales consecutivos
-        calculadora.calcular(operador.textContent)
+        if(!/^c/.test(operador.textContent)) calculadora.calcular(operador.textContent)
         memoria.crearEspacioMemoria('=')
         if(operador.classList.contains('operacion--lock')) {
             pantalla.operadorBloqueado = true
@@ -174,8 +172,8 @@ const ingresarOperacion = operacion => {
 
 
 const memoria = {
-    casillas: 0,
-    respuestas: 0,
+    casillasMemoria: 0,
+    casillasRespuestas: 0,
     vaBorrarCasilla: false,
 
     valor: () => {
@@ -185,7 +183,6 @@ const memoria = {
 
     crearEspacioMemoria: (boton) => {
         if(resultado.textContent === '3rr0r') return
-        // máximo 5 espacios
         const memoriaAsignada = document.createElement('div')
         const memoriaNombre = document.createElement('span')
         const memoriaValor = document.createElement('span')
@@ -198,21 +195,39 @@ const memoria = {
         memoriaAsignada.appendChild(memoriaValor)
 
         if(boton === '=') {
-            memoria.respuestas++
+            // el máximo son 24 caracteres, 11 de resutado, 3 de espacios, 10 operación
+            const longitudDisponibleOperacion = 24 - (resultado.textContent.length + 3)
             const memoriaOperacion = document.createElement('span')
+            let memoriaOperacionTXT = operador.textContent
             memoriaOperacion.classList.add('respuesta__operacion')
-            // el máximo son 24 caracteres
-            // ojo a las operaciones con % 
-            memoriaOperacion.textContent = `${operando1.textContent} ${operador.textContent} ${operando2.textContent}`
-            if(memoria.respuestas > 5) pantallaMemoria.removeChild(pantallaMemoria.lastElementChild)
-            memoriaAsignada.insertBefore(memoriaOperacion, memoriaValor)
-            pantallaMemoria.appendChild(memoriaAsignada)
+            memoria.casillasRespuestas++
+                if(memoriaOperacionTXT === '% de') memoriaOperacionTXT = '%'
+                if(memoriaOperacionTXT === '% más') memoriaOperacionTXT = '%+'
+                if(memoriaOperacionTXT === '% menos') memoriaOperacionTXT = '%-'
+                if(memoriaOperacionTXT === '% incremento') memoriaOperacionTXT = '%*'
+                if(memoriaOperacionTXT === 'corresponde') {
+                    memoriaOperacionTXT = '%*-'
+                    operando1.textContent = operando1.textContent.slice(0, -1)
+                    operando2.textContent = ''
+                }
+            // if(longitudDisponibleOperacion < memoriaOperacionTXT) {
+            //
+            // }
+            memoriaOperacion.textContent = `${operando1.textContent} ${memoriaOperacionTXT} ${operando2.textContent}`
+            memoriaAsignada.insertBefore(memoriaOperacion, memoriaAsignada.lastElementChild)
+
+            if(memoria.casillasRespuestas > 5) pantallaMemoria.removeChild(pantallaMemoria.lastElementChild)
+
+            if(!pantallaMemoria.children[memoria.casillasMemoria]) {
+                pantallaMemoria.insertBefore(memoriaAsignada, pantallaMemoria.firstChild)
+            } else {
+                pantallaMemoria.insertBefore(memoriaAsignada, pantallaMemoria.children[memoria.casillasMemoria])
+            }
         } else {
             pantallaMemoria.insertBefore(memoriaAsignada, pantallaMemoria.firstChild)
         }
 
         memoriaAsignada.addEventListener('click', () => {
-            console.log(memoriaAsignada.lastElementChild.textContent)
             if(!pantalla.celdaActiva()) pantalla.reset()
             pantalla.celdaActiva().textContent = ''
             pantalla.celdaActiva().textContent = memoriaAsignada.lastElementChild.textContent
@@ -237,8 +252,8 @@ const manejarMemoria = boton  => {
             pantallaMemoria.removeChild(espacioDisponible)
             boton.classList.add('boton--mVacia')
             memoria.vaBorrarCasilla = false
-            memoria.casillas--
-            if(!memoria.casillas) teclado.firstElementChild.lastElementChild.classList.add('boton--mVacia')
+            memoria.casillasMemoria--
+            if(!memoria.casillasMemoria) teclado.firstElementChild.lastElementChild.classList.add('boton--mVacia')
             return
         }
 
@@ -246,7 +261,7 @@ const manejarMemoria = boton  => {
             if(memoria.valor() === '') return
             memoria.crearEspacioMemoria(boton.textContent)
             boton.classList.remove('boton--mVacia')
-            memoria.casillas++
+            memoria.casillasMemoria++
             teclado.firstElementChild.lastElementChild.classList.remove('boton--mVacia')
         } else {
             if(!pantalla.celdaActiva()) pantalla.reset()
@@ -265,5 +280,6 @@ teclado.addEventListener('click', evento => {
     if(/^[0-9.]|^\+.\-$/.test(boton.textContent)) ingresarDigito(boton.textContent)
     if(/^[^0-9A-M.]{1,2}$/.test(boton.textContent)) ingresarOperacion(boton.textContent)
     if(/[A-M]/.test(boton.textContent)) manejarMemoria(boton)
+    // Retornas a A apenas se oprima cualquier otro botón
 })
 
