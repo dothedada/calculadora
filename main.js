@@ -6,7 +6,6 @@ const resultado = document.getElementById('resultado')
 const teclado = document.getElementById('teclado')
 
     // Cargar las respuestas a los espacios de memoria no fija
-    // Crear la secuencia de trabajo para administración de la memoria
     // Hacer empleables los espacios de memoria
     // Habilitar el uso de techlado
 
@@ -79,17 +78,17 @@ const calculadora = {
     '% incremento': (x, y) => (+y * 100) / (100 - +x),
     corresponde: (x, y) => ((+y * 100) / (100 - +x)) - +y,
 
-    resultado: operacion => {
-        let answer = calculadora[operacion](operando1.textContent, operando2.textContent)
+    calcular: operacion => {
+        let respuesta = calculadora[operacion](operando1.textContent, operando2.textContent)
         // A partir de la longitud determina si lo pasa a notación científica o acorta decimales
-        if(parseFloat(+answer).toString().length > 10) {
-            if(Math.round(+answer).toString().length > 10) {
-                answer = parseFloat(+answer).toExponential(4)
+        if(parseFloat(+respuesta).toString().length > 10) {
+            if(Math.round(+respuesta).toString().length > 10) {
+                respuesta = parseFloat(+respuesta).toExponential(4)
             } else {
-                answer = +parseFloat(+answer).toFixed(10 - Math.round(+answer).toString().length)
+                respuesta = +parseFloat(+respuesta).toFixed(10 - Math.round(+respuesta).toString().length)
             }
         }
-        resultado.textContent = answer
+        resultado.textContent = respuesta
     }
 }
 
@@ -104,7 +103,7 @@ const ingresarOperacion = operacion => {
         return
     }
     if(operacion === '=') {
-        calculadora.resultado(operador.textContent)
+        calculadora.calcular(operador.textContent)
         crearEspacioMemoria('=')
         if(operador.classList.contains('operacion--lock')) {
             pantalla.operadorBloqueado = true
@@ -123,7 +122,7 @@ const ingresarOperacion = operacion => {
     if(/^%/.test(operador.textContent)) {
         if(/o$/.test(operador.textContent) && operacion === '-') {
             operador.textContent = 'corresponde'
-            calculadora.resultado(operador.textContent)
+            calculadora.calcular(operador.textContent)
             operando1.textContent += '%' 
             operando2.textContent = 'a'
             return
@@ -140,7 +139,13 @@ const ingresarOperacion = operacion => {
         operador.textContent = operacion !== '%' ? operacion : '% de'
         return
     }
-    calculadora.resultado(operador.textContent)
+
+    calculadora.calcular(operador.textContent)
+    if(resultado.textContent === '3rr0r'){
+        pantalla.cambiarEstado(2, false, false)
+        return
+    }
+
     operador.textContent = operacion !== '%' ? operacion : '% de'
     operando1.textContent = resultado.textContent
     operando2.textContent = ''
@@ -151,7 +156,8 @@ const ingresarOperacion = operacion => {
 
 let casillasMemoria = 0
 const crearEspacioMemoria = (boton, valor) => {
-    // máximo 8 espacios
+    if(resultado.textContent === '3rr0r') return
+    // máximo 5 espacios
     const memoriaAsignada = document.createElement('div')
     const memoriaNombre = document.createElement('span')
     const memoriaValor = document.createElement('span')
@@ -176,48 +182,62 @@ const crearEspacioMemoria = (boton, valor) => {
 }
 
 let borrarMemoria = false
-const manejarMemoria = (boton, evento) => {
+const manejarMemoria = boton  => {
     const celdaActiva = document.getElementsByClassName('operacion--activo')[0]
-    const botonActivo = evento.target
+    let valorMemoria = undefined
 
-    if(boton === 'C') {
+
+    if(boton.textContent === 'C') {
         if(!celdaActiva) pantalla.reset()
         celdaActiva.textContent = ''
-        botonActivo.textContent = 'AC'
+        boton.textContent = 'AC'
     }
-    if(boton === 'AC') pantalla.reset()
+    if(boton.textContent === 'AC') pantalla.reset()
 
-    if(/^M/.test(boton)) {
+    if(/^M/.test(boton.textContent)) {
         const espacioDisponible = Array.from(memoria.children).find( casilla => {
-            return casilla.firstElementChild.textContent === `${boton}»`
+            return casilla.firstElementChild.textContent === `${boton.textContent}»`
         })
-        const valorMemoria = resultado.textContent !== '' 
-            ? resultado.textContent : celdaActiva.textContent
+        if(resultado.textContent) {
+            valorMemoria = resultado.textContent
+        } else if(celdaActiva.textContent) {
+            valorMemoria = celdaActiva.textContent
+        }
+
+        // Revisar la condición de valor memoria y demças que está impidiendo bajar 
+        // el valor con normalidad
 
         if(borrarMemoria) {
+            console.log('patito')
             memoria.removeChild(espacioDisponible)
-            botonActivo.classList.add('boton--mVacia')
+            boton.classList.add('boton--mVacia')
             casillasMemoria--
             borrarMemoria = false
             if(!casillasMemoria) teclado.firstElementChild.lastElementChild.classList.add('boton--mVacia')
             return
         }
-        if(espacioDisponible) return
-        crearEspacioMemoria(boton, valorMemoria)
+        if(!valorMemoria) return
+        if(espacioDisponible) {
+            celdaActiva.style.background = 'red'
+            celdaActiva.textContent = ''
+            celdaActiva.textContent = espacioDisponible.lastElementChild.textContent
+            return
+        }
+        crearEspacioMemoria(boton.textContent, valorMemoria)
         casillasMemoria++
-        botonActivo.classList.remove('boton--mVacia')
+        boton.classList.remove('boton--mVacia')
         teclado.firstElementChild.lastElementChild.classList.remove('boton--mVacia')
     }
-    if(boton === 'LM') borrarMemoria = true
+    if(boton.textContent === 'LM') borrarMemoria = true
 }
 
 teclado.addEventListener('click', evento => {
     if(evento.target.tagName !== 'BUTTON') return
     if(resultado.textContent === '3rr0r') pantalla.reset()
-    const boton = evento.target.textContent
-    if(/^[0-9.]|^\+.\-$/.test(boton)) ingresarDigito(boton)
-    if(/^[^0-9A-M.]+$/.test(boton) && boton.length < 3) ingresarOperacion(boton)
+    const boton = evento.target
+    if(/^[0-9.]|^\+.\-$/.test(boton.textContent)) ingresarDigito(boton.textContent)
+    if(/^[^0-9A-M.]{1,2}$/.test(boton.textContent)) ingresarOperacion(boton.textContent)
     teclado.firstElementChild.firstElementChild.textContent = 'C'
-    if(/[A-M]/.test(boton)) manejarMemoria(boton, evento)
+    if(/[A-M]/.test(boton.textContent)) manejarMemoria(boton)
 })
 
