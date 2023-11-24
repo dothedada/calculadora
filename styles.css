@@ -149,7 +149,7 @@ body {
 .boton:focus {
     outline-offset: 3px;
 }
-.boton:active {
+.boton:active, .boton-activo {
     transform: scale(0.8);
     outline-offset: 7px;
     border-radius: 0.5rem;
