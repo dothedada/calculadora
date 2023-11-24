@@ -182,15 +182,22 @@ const memoria = {
 
         if(boton === '=') {
             const memoriaOperacion = document.createElement('span')
+            memoria.casillas[1]++
+
             memoriaOperacion.classList.add('respuesta__operacion')
             memoriaOperacion.textContent = `${operando1.textContent} ${operador.textContent} ${operando2.textContent}`
 
-            memoria.casillas[1]++
+            // el máximo son 24 caracteres, 3 fijos para espacio, 11 máximo para resutado
+            if(resultado.textContent.length + memoriaOperacion.textContent.length > 24) {
+                const sobrepaso = (resultado.textContent.length + memoriaOperacion.textContent.length - 24)
+                let memOperando1 = operando1.textContent
+                let memOperando2 = operando2.textContent
+                const trim1 = Math.round((memOperando1.length * sobrepaso) / memoriaOperacion.textContent.length)
+                const trim2 = sobrepaso - trim1
+                if (trim1 > 0) memOperando1 = `${memOperando1.slice(0, -trim1 - 1)}…`
+                if (trim2 > 0) memOperando2 = `${memOperando2.slice(0, -trim2 - 1)}…`
 
-            // el máximo son 24 caracteres, 11 de resutado, 3 de espacios, 10 operación
-            if(24 - (resultado.textContent.length + 3) < memoriaOperacion.textContent.length) {
-                const sobrepaso = -((24 - (resultado.textContent.length + 3)) - memoriaOperacion.textContent.length)
-                console.log(sobrepaso)
+                memoriaOperacion.textContent = `${memOperando1} ${operador.textContent} ${memOperando2}`
             }
 
             memoriaAsignada.insertBefore(memoriaOperacion, memoriaAsignada.lastElementChild)

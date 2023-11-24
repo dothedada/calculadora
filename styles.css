@@ -58,6 +58,7 @@ body {
 .respuesta__resultado {
     margin: 0 0 0 auto;
     color: var(--color-intermedio);
+    text-decoration: underline;
 }
 .respuesta:hover::after {
     position: absolute;
