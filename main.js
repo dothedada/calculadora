@@ -283,14 +283,17 @@ teclado.addEventListener('click', event => {
 })
 
 document.body.addEventListener('keydown', event => {
-    const botones = teclado.getElementsByTagName('button')
-    const boton = Array.from(teclado.children[1].children).find(elemento => {
-        return elemento.textContent === event.key
-    })
-    console.log(boton)
-    console.log(event.key)
+    // const boton = Array.from(teclado.children[1].children).find(elemento => {
+    //     return elemento.textContent === event.key
+    // })
+    // console.log(boton)
+    // console.log(event.key)
+
     // tableroDigitos
-    if(/\d$|\./.test(event.key)) ingresarDigito(event.key)
+    if(/\d$|\./.test(event.key)) {
+        ingresarDigito(event.key)
+    }
+
     if(event.key === 'n') ingresarDigito('+/-')
     // operaciones
     if(/[\+\*\-\/%=]/.test(event.key)) {
