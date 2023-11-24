@@ -224,28 +224,38 @@ const ingresarOperacion = op => {
 }
 
 const manejarMemoria = boton  => {
-    if(boton.textContent === 'C') {
+    if(boton.textContent === 'C' || boton === 'c') {
         memoria.vaBorrarCasilla = false
         if(!pantalla.celdaActiva()) pantalla.reset()
         pantalla.celdaActiva().textContent = ''
         boton.textContent = 'AC'
         return
     }
-    if(boton.textContent === 'AC') {
+    if(boton.textContent === 'AC' || boton === 'a') {
         memoria.vaBorrarCasilla = false
         pantalla.reset()
         return
     }
 
-    if(/^M/.test(boton.textContent)) {
+    if(/^M/.test(boton.textContent) || /^F/.test(boton)) {
+        const teclaF = /^F/.test(boton) ? `M${boton.slice(-1)}` : undefined
+        const btnActivo = Array.from(teclado.firstElementChild.children).find(btnMem => btnMem.textContent === teclaF)
         const espacioDisponible = Array.from(dispMemoria.children).find( casilla => {
-            return casilla.firstElementChild.textContent === `${boton.textContent}»`
+            if(teclaF){
+                return casilla.firstElementChild.textContent === `${teclaF}»`
+            } else {
+                return casilla.firstElementChild.textContent === `${boton.textContent}»`
+            }
         })
 
         if(memoria.vaBorrarCasilla) {
             if(memoria.casillas[0] === 0) return
             dispMemoria.removeChild(espacioDisponible)
-            boton.classList.add('boton--mVacia')
+            if(!teclaF) {
+                boton.classList.add('boton--mVacia')
+            } else {
+                btnActivo.classList.add('boton--mVacia')
+            }
             memoria.vaBorrarCasilla = false
             memoria.casillas[0]--
             if(!memoria.casillas[0]) teclado.firstElementChild.lastElementChild.classList.add('boton--mVacia')
@@ -255,8 +265,13 @@ const manejarMemoria = boton  => {
         if(!espacioDisponible) {
             if(memoria.valor() === '') return
             memoria.casillas[0]++
-            memoria.crearEspacioMemoria(boton.textContent)
-            boton.classList.remove('boton--mVacia')
+            if(!btnActivo) {
+                memoria.crearEspacioMemoria(boton.textContent)
+                boton.classList.remove('boton--mVacia')
+            } else {
+                memoria.crearEspacioMemoria(teclaF)
+                btnActivo.classList.remove('boton--mVacia')
+            }
             teclado.firstElementChild.lastElementChild.classList.remove('boton--mVacia')
         } else {
             if(!pantalla.celdaActiva()) pantalla.reset()
@@ -266,7 +281,9 @@ const manejarMemoria = boton  => {
         return
     }
 
-    if(boton.textContent === 'LM') memoria.vaBorrarCasilla = true
+    if(boton.textContent === 'LM' || boton === 'l') {
+        memoria.vaBorrarCasilla = true
+    }
 }
 
 teclado.addEventListener('click', event => {
@@ -283,14 +300,16 @@ teclado.addEventListener('click', event => {
 })
 
 document.body.addEventListener('keydown', event => {
-    // const boton = Array.from(teclado.children[1].children).find(elemento => {
-    //     return elemento.textContent === event.key
-    // })
-    // console.log(boton)
-    // console.log(event.key)
-
     // tableroDigitos
-    if(/\d$|\./.test(event.key)) {
+    console.log(event.key)
+    if(/^\d$|\./.test(event.key)) {
+        const boton = Array.from(teclado.children[1].children).find(elemento => {
+                return elemento.textContent === event.key
+            })
+        boton.classList.add('boton-activo')
+        setTimeout(() => {
+            boton.classList.remove('boton-activo')
+        }, 100)
         ingresarDigito(event.key)
     }
 
@@ -298,6 +317,13 @@ document.body.addEventListener('keydown', event => {
     // operaciones
     if(/[\+\*\-\/%=]/.test(event.key)) {
         event.preventDefault()
+        const boton = Array.from(teclado.children[2].children).find(elemento => {
+                return elemento.textContent === event.key
+            })
+        boton.classList.add('boton-activo')
+        setTimeout(() => {
+            boton.classList.remove('boton-activo')
+        }, 100)
         ingresarOperacion(event.key)
     }
     if(/[xX]/.test(event.key)) ingresarOperacion('**')
@@ -306,8 +332,9 @@ document.body.addEventListener('keydown', event => {
         ingresarOperacion('=')
     }
     // memoria
-    if(/^F[1-3]$/.test(event.key)){
-        manejarMemoria(`M${event.key.slice(-1)}`)
+    if(/^F[1-3]$|[cal]/.test(event.key)){
+        manejarMemoria(event.key)
+        // manejarMemoria(`M${event.key.slice(-1)}`)
         event.preventDefault()
     }
 })
