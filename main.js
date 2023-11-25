@@ -224,11 +224,13 @@ const manejarMemoria = boton  => {
         boton.textContent = 'AC'
         return
     }
+
     if(boton.textContent === 'AC') {
         memoria.vaBorrarCasilla = false
         pantalla.reset()
         return
     }
+    
     if(/^M/.test(boton.textContent)) {
         const espacioDisponible = Array.from(dispMemoria.children).find( casilla => {
             return casilla.firstElementChild.textContent === `${boton.textContent}»`
@@ -255,6 +257,7 @@ const manejarMemoria = boton  => {
         }
         return
     }
+    
     if(boton.textContent === 'LM') memoria.vaBorrarCasilla = true
 }
 
@@ -300,17 +303,17 @@ teclado.addEventListener('click', event => {
 
 document.body.addEventListener('keydown', event => {
     if(resultado.textContent === '3rr0r') pantalla.reset()
-    if(/^F[1-3]$|[cal]/.test(event.key)){
+    if(/^F[1-3]$|^[cal]$/.test(event.key)){
         event.preventDefault()
         manejarMemoria(tecladoFisico(event.key, 'memoria'))
+    } else {
+        teclado.firstElementChild.firstElementChild.textContent = 'C'
     }
     if(/^\d$|\.|^n/.test(event.key)) {
         ingresarDigito(tecladoFisico(event.key, 'numeros').textContent)
-        teclado.firstElementChild.firstElementChild.textContent = 'C'
     }
     if(/[\+\*\-\/%=]|x|^Enter$/.test(event.key)) {
         event.preventDefault()
         ingresarOperacion(tecladoFisico(event.key, 'operacion').textContent)
-        teclado.firstElementChild.firstElementChild.textContent = 'C'
     }
 })
