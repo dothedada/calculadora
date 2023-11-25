@@ -224,38 +224,28 @@ const ingresarOperacion = op => {
 }
 
 const manejarMemoria = boton  => {
-    if(boton.textContent === 'C' || boton === 'c') {
+    if(boton.textContent === 'C') {
         memoria.vaBorrarCasilla = false
         if(!pantalla.celdaActiva()) pantalla.reset()
         pantalla.celdaActiva().textContent = ''
         boton.textContent = 'AC'
         return
     }
-    if(boton.textContent === 'AC' || boton === 'a') {
+    if(boton.textContent === 'AC') {
         memoria.vaBorrarCasilla = false
         pantalla.reset()
         return
     }
 
-    if(/^M/.test(boton.textContent) || /^F/.test(boton)) {
-        const teclaF = /^F/.test(boton) ? `M${boton.slice(-1)}` : undefined
-        const btnActivo = Array.from(teclado.firstElementChild.children).find(btnMem => btnMem.textContent === teclaF)
+    if(/^M/.test(boton.textContent)) {
         const espacioDisponible = Array.from(dispMemoria.children).find( casilla => {
-            if(teclaF){
-                return casilla.firstElementChild.textContent === `${teclaF}»`
-            } else {
-                return casilla.firstElementChild.textContent === `${boton.textContent}»`
-            }
+            return casilla.firstElementChild.textContent === `${boton.textContent}»`
         })
 
         if(memoria.vaBorrarCasilla) {
             if(memoria.casillas[0] === 0) return
             dispMemoria.removeChild(espacioDisponible)
-            if(!teclaF) {
-                boton.classList.add('boton--mVacia')
-            } else {
-                btnActivo.classList.add('boton--mVacia')
-            }
+            boton.classList.add('boton--mVacia')
             memoria.vaBorrarCasilla = false
             memoria.casillas[0]--
             if(!memoria.casillas[0]) teclado.firstElementChild.lastElementChild.classList.add('boton--mVacia')
@@ -265,13 +255,8 @@ const manejarMemoria = boton  => {
         if(!espacioDisponible) {
             if(memoria.valor() === '') return
             memoria.casillas[0]++
-            if(!btnActivo) {
-                memoria.crearEspacioMemoria(boton.textContent)
-                boton.classList.remove('boton--mVacia')
-            } else {
-                memoria.crearEspacioMemoria(teclaF)
-                btnActivo.classList.remove('boton--mVacia')
-            }
+            memoria.crearEspacioMemoria(boton.textContent)
+            boton.classList.remove('boton--mVacia')
             teclado.firstElementChild.lastElementChild.classList.remove('boton--mVacia')
         } else {
             if(!pantalla.celdaActiva()) pantalla.reset()
@@ -281,9 +266,36 @@ const manejarMemoria = boton  => {
         return
     }
 
-    if(boton.textContent === 'LM' || boton === 'l') {
+    if(boton.textContent === 'LM') {
         memoria.vaBorrarCasilla = true
     }
+}
+
+const tecladoFisico = (teclaEvento, tecladoDisp) => {
+    let tecladoMapeo
+    if(tecladoDisp === 'memoria') tecladoMapeo = teclado.children[0].children 
+    if(tecladoDisp === 'numeros') tecladoMapeo = teclado.children[1].children 
+    if(tecladoDisp === 'operacion') tecladoMapeo = teclado.children[2].children 
+    let teclaPresionada = teclaEvento
+    if(teclaEvento === 'n') teclaPresionada = '+/-'
+    if(teclaEvento === 'x') teclaPresionada = '**'
+    if(teclaEvento === 'Enter') teclaPresionada = '='
+    if(teclaEvento === 'c') teclaPresionada = 'C'
+    if(teclaEvento === 'a') teclaPresionada = 'AC'
+    if(teclaEvento === 'F1') teclaPresionada = 'M1'
+    if(teclaEvento === 'F2') teclaPresionada = 'M2'
+    if(teclaEvento === 'F3') teclaPresionada = 'M3'
+    if(teclaEvento === 'l') teclaPresionada = 'LM'
+
+    let tecla = Array.from(tecladoMapeo).find(boton => {
+        return boton.textContent === teclaPresionada
+    })
+    if(!tecla) tecla = teclado.firstElementChild.firstElementChild
+    tecla.classList.add('boton--activo')
+    setTimeout(() => {
+        tecla.classList.remove('boton--activo')
+    }, 150)
+    return tecla
 }
 
 teclado.addEventListener('click', event => {
@@ -300,41 +312,21 @@ teclado.addEventListener('click', event => {
 })
 
 document.body.addEventListener('keydown', event => {
-    // tableroDigitos
-    console.log(event.key)
-    if(/^\d$|\./.test(event.key)) {
-        const boton = Array.from(teclado.children[1].children).find(elemento => {
-                return elemento.textContent === event.key
-            })
-        boton.classList.add('boton-activo')
-        setTimeout(() => {
-            boton.classList.remove('boton-activo')
-        }, 100)
-        ingresarDigito(event.key)
-    }
-
-    if(event.key === 'n') ingresarDigito('+/-')
-    // operaciones
-    if(/[\+\*\-\/%=]/.test(event.key)) {
-        event.preventDefault()
-        const boton = Array.from(teclado.children[2].children).find(elemento => {
-                return elemento.textContent === event.key
-            })
-        boton.classList.add('boton-activo')
-        setTimeout(() => {
-            boton.classList.remove('boton-activo')
-        }, 100)
-        ingresarOperacion(event.key)
-    }
-    if(/[xX]/.test(event.key)) ingresarOperacion('**')
-    if(event.key === 'Enter'){
-        event.preventDefault()
-        ingresarOperacion('=')
-    }
+    if(resultado.textContent === '3rr0r') pantalla.reset()
     // memoria
     if(/^F[1-3]$|[cal]/.test(event.key)){
-        manejarMemoria(event.key)
-        // manejarMemoria(`M${event.key.slice(-1)}`)
         event.preventDefault()
+        manejarMemoria(tecladoFisico(event.key, 'memoria'))
+    }
+    // tableroDigitos
+    if(/^\d$|\.|^n/.test(event.key)) {
+        ingresarDigito(tecladoFisico(event.key, 'numeros').textContent)
+        teclado.firstElementChild.firstElementChild.textContent = 'C'
+    }
+    // operaciones
+    if(/[\+\*\-\/%=]|x|^Enter$/.test(event.key)) {
+        event.preventDefault()
+        ingresarOperacion(tecladoFisico(event.key, 'operacion').textContent)
+        teclado.firstElementChild.firstElementChild.textContent = 'C'
     }
 })
