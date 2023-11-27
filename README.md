@@ -1,9 +1,8 @@
 # Calculame, calculame, calculadora
 Ejercicio de programación con JS vanilla para TOP, en el cual se diseñe y programé una calculadora sencilla y a la medida de mis necesidades.
 
-El propósito era hacer que fuera lo más sencilla para usar y que esta sencillez se reflejara en el código.
-Gran parte de las secuencias de uso corresponden a las calculadoras sencillas Casio.
-
+Buscaba qeu la sencillez de su uso se viera reflejada en el código.
+Gran parte de las secuencias de operación corresponden a las calculadoras sencillas Casio.
 
 **[Versión en vivo](https://dothedada.github.io/calculadora/)**
 
