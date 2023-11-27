@@ -91,7 +91,7 @@ const memoria = {
         memTipo.textContent = boton === '=' ? 'R→' : `${boton}»`
         memValor.textContent = boton === '=' ? resultado.textContent : memoria.valor() 
         memDiv.appendChild(memTipo)
-        memDiv.appendChild(memValor) // no estoy muy seguro de dejar esto acá
+        memDiv.appendChild(memValor)
         if(boton === '=') {
             const memOp = document.createElement('span')
             memoria.casillas[1]++
