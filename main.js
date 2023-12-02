@@ -81,38 +81,35 @@ const memoria = {
 		return pantalla.celdaActiva().textContent;
 	},
 
-	crearEspacioMemoria: boton => {
-		if (resultado.textContent === '3rr0r') return;
-		const memDiv = document.createElement('div');
-		const memTipo = document.createElement('span');
-		const memValor = document.createElement('span');
-		memDiv.classList.add('respuesta');
-		memTipo.classList.add('respuesta__teclado');
-		memValor.classList.add('respuesta__resultado');
-		memTipo.textContent = boton === '=' ? 'R→' : `${boton}»`;
-		memValor.textContent = boton === '=' ? resultado.textContent : memoria.valor();
-		memDiv.appendChild(memTipo);
-		memDiv.appendChild(memValor); // no estoy muy seguro de dejar esto acá
-		if (boton === '=') {
-			const memOp = document.createElement('span');
-			memoria.casillas[1]++;
-			memOp.classList.add('respuesta__operacion');
-			memOp.textContent = `${operando1.textContent} ${operador.textContent} ${operando2.textContent}`;
-			// 24 es la cantidad de caracteres que entran en línea antes de romper diseño
-			if (resultado.textContent.length + memOp.textContent.length > 24) {
-				const deMas =
-					resultado.textContent.length + memOp.textContent.length - 24;
-				let memOper1 = operando1.textContent;
-				let memOper2 = operando2.textContent;
-				const trim1 = Math.round(
-					(memOper1.length * deMas) / memOp.textContent.length
-				);
-				const trim2 = deMas - trim1;
-				if (trim1 > 0) memOper1 = `${memOper1.slice(0, -trim1 - 1)}…`;
-				if (trim2 > 0) memOper2 = `${memOper2.slice(0, -trim2 - 1)}…`;
-				memOp.textContent = `${memOper1} ${operador.textContent} ${memOper2}`;
-			}
-			memDiv.insertBefore(memOp, memValor);
+    crearEspacioMemoria: boton => {
+        if(resultado.textContent === '3rr0r') return
+        const memDiv = document.createElement('div')
+        const memTipo = document.createElement('span')
+        const memValor = document.createElement('span')
+        memDiv.classList.add('respuesta')
+        memTipo.classList.add('respuesta__teclado')
+        memValor.classList.add('respuesta__resultado')
+        memTipo.textContent = boton === '=' ? 'R→' : `${boton}»`
+        memValor.textContent = boton === '=' ? resultado.textContent : memoria.valor() 
+        memDiv.appendChild(memTipo)
+        memDiv.appendChild(memValor)
+        if(boton === '=') {
+            const memOp = document.createElement('span')
+            memoria.casillas[1]++
+            memOp.classList.add('respuesta__operacion')
+            memOp.textContent = `${operando1.textContent} ${operador.textContent} ${operando2.textContent}`
+            // 24 es la cantidad de caracteres que entran en línea antes de romper diseño
+            if(resultado.textContent.length + memOp.textContent.length > 24) {
+                const deMas = (resultado.textContent.length + memOp.textContent.length - 24)
+                let memOper1 = operando1.textContent
+                let memOper2 = operando2.textContent
+                const trim1 = Math.round((memOper1.length * deMas) / memOp.textContent.length)
+                const trim2 = deMas - trim1
+                if (trim1 > 0) memOper1 = `${memOper1.slice(0, -trim1 - 1)}…`
+                if (trim2 > 0) memOper2 = `${memOper2.slice(0, -trim2 - 1)}…`
+                memOp.textContent = `${memOper1} ${operador.textContent} ${memOper2}`
+            }
+            memDiv.insertBefore(memOp, memValor)
 
 			if (!dispMemoria.children[0]) {
 				dispMemoria.appendChild(memDiv);
