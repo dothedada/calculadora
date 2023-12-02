@@ -1,192 +1,193 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 :root {
-    --color-blanco: #e8e4dc;
-    --color-fondo: #d1cdc7;
-    --color-texto: #99938a;
-    --color-intermedio: #69655e;
-    --color-intermedio-oprimido: #4f4c47;
-    --color-frente: #262421;
-    --color-operacion: #b8852e;
-    --color-operacion-oprimido: #9e7328;
-    --color-advertencia: #ca4830;
-    --color-advertencia-oprimido: #963524;
+	--color-blanco: #e8e4dc;
+	--color-fondo: #d1cdc7;
+	--color-texto: #99938a;
+	--color-intermedio: #69655e;
+	--color-intermedio-oprimido: #4f4c47;
+	--color-frente: #262421;
+	--color-operacion: #b8852e;
+	--color-operacion-oprimido: #9e7328;
+	--color-advertencia: #ca4830;
+	--color-advertencia-oprimido: #963524;
 }
-* { 
-    margin: 0;
-    padding: 0;
+* {
+	margin: 0;
+	padding: 0;
 }
-html { 
-    font-size: 100%;
+html {
+	font-size: 100%;
 }
 body {
-    background-color: var(--color-fondo);
-    font-family: 'Fira Code', monospace;
+	background-color: var(--color-fondo);
+	font-family: 'Fira Code', monospace;
 }
 .calculadora {
-    margin: 1rem auto 0;
-    width: 17rem;
-    padding: 0 0 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	margin: 1rem auto 0;
+	width: 17rem;
+	padding: 0 0 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 .respuestas {
-    display: flex;
-    flex-direction: column-reverse;
-    height: 14rem;
+	display: flex;
+	flex-direction: column-reverse;
+	height: 14rem;
 }
 .respuesta {
-    position: relative;
-    width: 28ch;
-    padding: 0.1rem 1ch;
-    display: flex;
-    color: var(--color-texto);
-    cursor: pointer;
+	position: relative;
+	width: 28ch;
+	padding: 0.1rem 1ch;
+	display: flex;
+	color: var(--color-texto);
+	cursor: pointer;
 }
 .respuesta:hover {
-    background-color: var(--color-blanco);
-    border-radius: 0.3rem;
+	background-color: var(--color-blanco);
+	border-radius: 0.3rem;
 }
 .respuesta:first-child {
-    margin: 0 0 1rem;
-    border-bottom: none;
+	margin: 0 0 1rem;
+	border-bottom: none;
 }
 .respuesta__teclado,
 .respuesta__operacion {
-    margin: 0 1ch 0 0;
+	margin: 0 1ch 0 0;
 }
 .respuesta__resultado {
-    margin: 0 0 0 auto;
-    color: var(--color-intermedio);
-    text-decoration: underline;
+	margin: 0 0 0 auto;
+	color: var(--color-intermedio);
+	text-decoration: underline;
 }
 .respuesta:hover::after {
-    position: absolute;
-    content: '↓';
-    padding: 0 1ch;
-    right: 0;
-    text-decoration: underline;
-    color: var(--color-frente);
-    transform: translateX(100%);
-    cursor: pointer;
+	position: absolute;
+	content: '↓';
+	padding: 0 1ch;
+	right: 0;
+	text-decoration: underline;
+	color: var(--color-frente);
+	transform: translateX(100%);
+	cursor: pointer;
 }
 .pantalla {
-    margin: 0 0 1.5rem;
-    position: relative;
-    padding: 0.5rem 2ch 0.2rem;
-    width: 28ch;
-    border-radius: 0.5rem;
-    background-color: var(--color-blanco);
-    color: var(--color-intermedio);
+	margin: 0 0 1.5rem;
+	position: relative;
+	padding: 0.5rem 2ch 0.2rem;
+	width: 28ch;
+	border-radius: 0.5rem;
+	background-color: var(--color-blanco);
+	color: var(--color-intermedio);
 }
 .operacion {
-    display: block;
-    height: 1.4rem;
+	display: block;
+	height: 1.4rem;
 }
 .operacion__operador {
-    color: var(--color-frente);
+	color: var(--color-frente);
 }
 .operacion--activo::after {
-    content: '_';
-    animation: cursor 0.8s steps(1) infinite;
+	content: '_';
+	animation: cursor 0.8s steps(1) infinite;
 }
 .operacion--resultado::after {
-    content: '=';
-    margin: 0 1ch;
+	content: '=';
+	margin: 0 1ch;
 }
 .operacion--respuesta::before {
-    color: var(--color-fondo);
-    content: 'R>';
+	color: var(--color-fondo);
+	content: 'R>';
 }
 .operacion--lock {
-    color: var(--color-operacion);
+	color: var(--color-operacion);
 }
 .pantalla__resultado {
-    color: var(--color-frente);
-    height: 2.7rem;
-    font-size: 2rem;
-    text-align: right;
+	color: var(--color-frente);
+	height: 2.7rem;
+	font-size: 2rem;
+	text-align: right;
 }
 .teclado,
 .teclado > * {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
 }
 .teclado__memoria {
-    flex-direction: row;
+	flex-direction: row;
 }
 .teclado__numerico {
-    max-width: 10rem;
-    flex-wrap: wrap-reverse;
+	max-width: 10rem;
+	flex-wrap: wrap-reverse;
 }
 .teclado__operaciones {
-    flex-direction: column-reverse;
-    flex-wrap: wrap;
-    max-height: 14rem;
+	flex-direction: column-reverse;
+	flex-wrap: wrap;
+	max-height: 14rem;
 }
 .boton {
-    --_color-boton: var(--color-boton, var(--color-intermedio));
-    box-sizing: border-box;
-    width: 3rem;
-    height: 3rem;
-    border: none;
-    border-radius: 1.2rem;
-    outline-offset: -1px;
-    outline: solid 2px var(--_color-boton);
-    background-color: var(--_color-boton);
-    color: var(--color-blanco);
-    font-family: 'Fira Code', monospace;
-    text-align: center;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: 
-        outline-offset 0.1s ease-in-out,
-        transform 0.1s ease-in-out,
-        border-radius 0.15s ease-in-out;
+	--_color-boton: var(--color-boton, var(--color-intermedio));
+	box-sizing: border-box;
+	width: 3rem;
+	height: 3rem;
+	border: none;
+	border-radius: 1.2rem;
+	outline-offset: -1px;
+	outline: solid 2px var(--_color-boton);
+	background-color: var(--_color-boton);
+	color: var(--color-blanco);
+	font-family: 'Fira Code', monospace;
+	text-align: center;
+	font-size: 1.2rem;
+	cursor: pointer;
+	transition:
+		outline-offset 0.1s ease-in-out,
+		transform 0.1s ease-in-out,
+		border-radius 0.15s ease-in-out;
 }
 .boton:hover,
 .boton:focus {
-    outline-offset: 3px;
+	outline-offset: 3px;
 }
-.boton:active, .boton--activo {
-    transform: scale(0.8);
-    outline-offset: 7px;
-    border-radius: 0.5rem;
-    background-color: var(--color-boton, var(--color-intermedio-oprimido));
+.boton:active,
+.boton--activo {
+	transform: scale(0.8);
+	outline-offset: 7px;
+	border-radius: 0.5rem;
+	background-color: var(--color-boton, var(--color-intermedio-oprimido));
 }
 .boton--borrar {
-    --color-boton: var(--color-advertencia);
+	--color-boton: var(--color-advertencia);
 }
 .boton--borrar:active {
-    --color-boton: var(--color-advertencia-oprimido);
+	--color-boton: var(--color-advertencia-oprimido);
 }
 .boton--memoria {
-    --color-boton: var(--color-frente);
+	--color-boton: var(--color-frente);
 }
 .boton--mVacia {
-    background: none;
-    color: var(--color-frente);
+	background: none;
+	color: var(--color-frente);
 }
 .boton--operacion {
-    --color-boton: var(--color-operacion);
+	--color-boton: var(--color-operacion);
 }
 .boton--operacion:active {
-    --color-boton: var(--color-operacion-oprimido);
+	--color-boton: var(--color-operacion-oprimido);
 }
 .boton--doble {
-    height: 6.5rem;
+	height: 6.5rem;
 }
 a {
-    display: block;
-    text-align: center;
+	display: block;
+	text-align: center;
 }
 svg {
-    fill: var(--color-intermedio-oprimido);
-    width: 40px;
+	fill: var(--color-intermedio-oprimido);
+	width: 40px;
 }
 @keyframes cursor {
-    50% {
-        opacity: 0;
-    }
+	50% {
+		opacity: 0;
+	}
 }
